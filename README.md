@@ -4,6 +4,8 @@
 ## Jump to Section
 
 * [Getting Started](#getting-started)
+* [Installation](#installation)
+* [Usage](#usage)
 
 ## Getting Started
 
