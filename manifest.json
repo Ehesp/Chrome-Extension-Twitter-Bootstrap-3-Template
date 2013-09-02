@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2,
+	"name": "Chrome Extension Template with Twitter Bootstrap 3.0",
+	"description": "A basic template for a Chrome Extension using Twitter Bootstrap 3",
+	"version": "1.0",
+	"permissions": [
+		"storage"
+	],
+	"icons": { 
+		"16": "img/icon16.png",
+		"48": "img/icon48.png",
+		"128": "img/icon128.png" 
+	},
+	"browser_action": {
+		"default_icon": {                    
+			"19": "img/icon48.png",          
+			"38": "img/icon48.png"          
+		},
+		"default_popup": "popup.html"
+	},
+	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+	"web_accessible_resources": [
+		"img/icon128.png"
+	]
+}
