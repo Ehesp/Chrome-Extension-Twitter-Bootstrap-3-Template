@@ -13,7 +13,6 @@ This package has been made to quickly get yourself up and running with making a 
 
     - css/
 		-- bootstrap.min (Edited, please see "important notes")
-		-- bootstrap-theme.min (Not included by default, add it to your popup.html file if you wish to use this)
 		-- custom.css (Contains small style tweaks, edit this file at your will)
     - fonts/
         -- glyphicons-halflings-regular.eot
