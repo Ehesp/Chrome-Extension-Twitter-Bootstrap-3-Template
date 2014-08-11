@@ -1,6 +1,8 @@
 # Chrome Extension Twitter Bootstrap 3 Template
 > A template for making a Google Chrome Extension, using Twitter Bootstrap 3.
 
+![Screenshot](http://i.imgur.com/RK4GhXu.jpg)
+
 ## Jump to Section
 
 * [Getting Started](#getting-started)
