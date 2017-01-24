@@ -1,3 +1,7 @@
+Chrome extension for interacting with Shareablemetrics.
+
+# Boilerplate Content Follows, eventually can delete.
+
 # Chrome Extension Twitter Bootstrap 3 Template
 > A template for making a Google Chrome Extension, using Twitter Bootstrap 3.
 
