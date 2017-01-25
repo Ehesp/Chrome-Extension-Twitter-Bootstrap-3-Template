@@ -27,8 +27,9 @@ $( document ).ready(function() {
       var urls = data.urls;
       console.log("We'll upload ", urls)
       // http://localhost:3000/clients/392/stories/1946/article_batches
-      $.post("http://localhost:3000/clients/392/stories/1946/article_batches.json",
-        {article_batch: {name: 'From extension', story_id: '1946', urls_array: urls}}, function(data, textStatus) {
+      // http://app.shareablemetrics.com/clients/386/stories/1904
+      $.post("http://app.shareablemetrics.com/clients/386/stories/1904/article_batches.json",
+        {article_batch: {name: 'From extension', story_id: '1904', urls_array: urls}}, function(data, textStatus) {
           console.log(data);
           console.log(textStatus);
         });
