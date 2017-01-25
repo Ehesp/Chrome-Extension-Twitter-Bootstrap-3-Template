@@ -8,13 +8,31 @@ body, section {			/* Change width and height to own preferences */
 	width: 500px;
 	height: 400px;
 	overflow-x: hidden;
+  padding: 1rem;
 }
 
 /* Basic style tweaks */
 section { padding: 5px;}
-.navbar { margin-bottom: 2px; }
+.navbar { margin-bottom: 1rem; }
 
 /* Scroll Bar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
 ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:window-inactive  { background: red; }
+
+.row {
+  margin-bottom: 1rem;
+}
+
+.navbar-brand {
+  padding: 0 15px;
+}
+
+.navbar-brand img {
+  height: 48px;
+}
+
+#urls {
+  border: 1px solid #ddd;
+  height: 20rem;
+}
