@@ -10,6 +10,9 @@
 		<!-- Scripts -->
 		<script src="js/jquery-2.0.3.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bluebird.min.js"></script>
+		<script src="js/lodash.min.js"></script>
+		<script src="js/settings.js"></script>
 		<script src="js/sm.js"></script>
 
 		<!-- Cascading Style Sheets -->
@@ -20,50 +23,7 @@
 	
 	<body>
 	
-		<nav class="navbar navbar-default" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">
-					<img alt="ShareableMetrics" src="img/icon48.png" height="48"/>
-				</a>
-			</div>
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li>
-						<a id="add-url" href="#"><i class="fa fa-lg fa-plus-square" title="Add URL"></i></a>
-					</li>
-					<li>
-						<a id="import" href="#"><i class="fa fa-lg fa-cloud-upload" title="Import to ShareableMetrics"></i></a>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sample Client <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="#" class="client-list-item">Amazon</a>
-							</li>
-							<li>
-								<a href="#" class="client-list-item">Healthcare</a>
-							</li>
-							<li>
-								<a href="#" class="client-list-item">Home Technology</a>
-							</li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sample Story <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="#">New Sample Story</a>
-							</li>
-							<li>
-								<a href="#">Test</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</nav>
-
-		<div class="container-fluid">
+		<div class="container-fluid show check-access">
 <!--
 			<div class="row">
 				<div class="col-md-12">
@@ -80,11 +40,80 @@
 				</div>
 			</div> -->
 			<div class="row">
-				<div class="col-12" id="urls">
-<!-- 					<textarea class="form-control" rows="20" id="urls" style="width: 100%;">
-						</textarea>
- -->				</div>
+				<div class="col-12" id="status">
+				</div>
 			</div>
+		</div>
+
+		<div class="main-content hidden">
+			<nav class="navbar navbar-default" role="navigation">
+<!-- 				<div class="navbar-header">
+					<a class="navbar-brand" href="#">
+						<img alt="ShareableMetrics" src="img/icon48.png" height="48"/>
+					</a>
+				</div> -->
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+					<ul class="nav navbar-nav">
+<!-- 						<li>
+							<a id="add-url" href="#"><i class="fa fa-lg fa-plus-square" title="Add URL"></i></a>
+						</li>
+						<li>
+							<a id="import" href="#"><i class="fa fa-lg fa-cloud-upload" title="Import to ShareableMetrics"></i></a>
+						</li> -->
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle client-dropdown" data-toggle="dropdown">
+								<span class="name"></span>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu client-list">
+<!-- 								<li>
+									<a href="#" class="client-list-item">Amazon</a>
+								</li>
+								<li>
+									<a href="#" class="client-list-item">Healthcare</a>
+								</li>
+								<li>
+									<a href="#" class="client-list-item">Home Technology</a>
+								</li> -->
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle story-dropdown" data-toggle="dropdown">
+								<span class="name"></span>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu story-list">
+							</ul>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i><b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#" id="logout">Logout</a>
+								</li>
+							</ul>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12 status">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12" id="urls">
+	<!-- 					<textarea class="form-control" rows="20" id="urls" style="width: 100%;">
+							</textarea>
+	 -->				</div>
+				</div>
+			</div>
+
 		</div>
 
 	</body>

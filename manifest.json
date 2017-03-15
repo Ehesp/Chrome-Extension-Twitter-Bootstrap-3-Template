@@ -25,5 +25,13 @@
 	"web_accessible_resources": [
 		"*.png",
 		"*.ttf"
-	]
+	],
+	"content_scripts": [
+    {
+      "matches": ["http://*.shareablemetrics.com/*",
+    		"https://*.shareablemetrics.com/*",
+    		"http://localhost/*"],
+      "js": ["js/get-auth-token.js"]
+    }
+  ]
 }
