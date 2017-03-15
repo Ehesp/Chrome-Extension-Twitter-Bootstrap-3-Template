@@ -111,6 +111,7 @@ var show_main = function() {
   $('.main-content').removeClass('hidden').addClass('show');
   $('#status').empty();
   populate_dropdowns();
+  // load_url_
 }
 
 var set_api_token = function(token) {
@@ -121,7 +122,6 @@ var set_api_token = function(token) {
 }
 
 var populate_dropdowns = function() {
-  console.log("hi ho populate_dropdowns");
   $.get(HOST + "clients_and_stories")
     .done(function(data) {
       var r = data.clients.map(function(client) {
@@ -134,7 +134,7 @@ var populate_dropdowns = function() {
         })
       })
       $('.story-list').html(_.flatten(r));
-      // TODO This needs to be the last selected one
+      // TODO This needs to be the last selected one, or the user's default client
       $('.client-list a:first').click()
     })
     .fail(function(jqHxr, textStatus) {
