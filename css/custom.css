@@ -8,7 +8,7 @@ body, section {			/* Change width and height to own preferences */
 	width: 500px;
 	height: 400px;
 	overflow-x: hidden;
-  padding: 1rem;
+  padding: 3px;
 }
 
 /* Basic style tweaks */
@@ -35,4 +35,12 @@ section { padding: 5px;}
 #urls {
   border: 1px solid #ddd;
   height: 20rem;
+}
+
+.sm-panel {
+  margin-bottom: 3px;
+}
+
+.sm-panel .panel-body {
+  padding: 3px;
 }
