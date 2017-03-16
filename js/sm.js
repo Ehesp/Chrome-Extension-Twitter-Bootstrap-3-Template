@@ -94,7 +94,6 @@ $( document ).ready(function() {
   });
 
   $('.client-list').on('click', function(e) {
-    console.log("client-list click ", e);
     $t = $(e.target)
     selected_client_id = $t.data('id')
     $('.client-dropdown .name').text($t.text())
@@ -110,6 +109,8 @@ var show_main = function() {
   $('.check-access').removeClass('show').addClass('hidden');
   $('.main-content').removeClass('hidden').addClass('show');
   $('#status').empty();
+  // TODO This doesn't seem to remove focus from that first button
+  $('button.client-dropdown').blur();
   populate_dropdowns();
   load_url_and_metadata();
 }
@@ -150,7 +151,9 @@ var load_url_and_metadata = function() {
       .done(function(data) {
         $('.metadata .url').text(data.result.canonical_url)
         $('.metadata .title').text(data.result.title)
-        $('.metadata .pubdate').text(data.result.published_at)
+        $('.metadata .pubdate').text(data.result.published_at_formatted)
+        load_source(data.result.canonical_url);
+        load_stats(data.result.canonical_url);
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
@@ -164,4 +167,34 @@ var load_url_and_metadata = function() {
       });
     });
   });
+}
+
+var load_source = function(url) {
+  $.post(HOST + "get_article_source",
+      {url: url})
+    .done(function(data) {
+      $('.metadata .source').text(data.source)
+    })
+  .fail(function(jqHxr, textStatus) {
+    $('.main-content .status').append($('<div>Load source failed: ' + textStatus + '</div>'));
+    });
+}
+
+var load_stats = function(url) {
+  $.post(HOST + "get_article_stats",
+      {
+        url: url,
+        client_id: selected_client_id
+      })
+    .done(function(data) {
+      $('.stats .loading').removeClass('loading')
+      $('.stats .facebook').text(data.facebook_total_formatted)
+      $('.stats .twitter').text(data.twitter_formatted)
+      $('.stats .google').text(data.google_share_formatted)
+      $('.stats .linkedin').text(data.linkedin_formatted)
+      $('.stats .pinterest').text(data.pinterest_formatted)
+    })
+  .fail(function(jqHxr, textStatus) {
+    $('.main-content .status').append($('<div>Load stats failed: ' + textStatus + '</div>'));
+    });
 }
