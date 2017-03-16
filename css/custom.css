@@ -65,6 +65,10 @@ section { padding: 5px;}
   margin-bottom: 0;
 }
 
+.add-to-story {
+  min-width: 4rem;
+}
+
 /* For animated ellipsis */
 .loading:after {
   overflow: hidden;

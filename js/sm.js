@@ -115,6 +115,8 @@ $( document ).ready(function() {
   })
 
   $('.add-to-story').on('click', function(e) {
+    $('.add-to-story').text("")
+    $('.add-to-story').addClass("loading")
     $.post(HOST + "add_article",
       {
         story_id: selected_story_id,
@@ -125,12 +127,19 @@ $( document ).ready(function() {
       })
       .done(function(data) {
         console.log("done", data);
+        $('.add-to-story').addClass('hidden')
+        $('.add-to-story').removeClass("loading")
+        $('.add-to-story').text("Add to story")
+        $('.go-to-story').removeClass('hidden')
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
       });
     });
 
+  $('.go-to-story').on('click', function(e) {
+    chrome.tabs.create({ url: APP_HOST + "clients/" + selected_client_id + "/stories/" + selected_story_id });
+    });
 
 });
 
