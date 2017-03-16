@@ -6,7 +6,7 @@
 
 body, section {			/* Change width and height to own preferences */
 	width: 500px;
-	height: 400px;
+	height: 526px;
 	overflow-x: hidden;
   padding: 3px;
 }
@@ -41,7 +41,7 @@ section { padding: 5px;}
   margin-bottom: 3px;
 }
 
-.sm-panel .panel-body {
+.sm-panel .panel-body, .stats-panel .panel-body {
   padding: 3px;
 }
 
