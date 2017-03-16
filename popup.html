@@ -1,108 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+  <head>
     <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="ShareableMetrics">
-		<meta name="author" content="ShareableMetrics">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ShareableMetrics">
+    <meta name="author" content="ShareableMetrics">
 
-		<title>ShareableMetrics</title>
+    <title>ShareableMetrics</title>
 
-		<!-- Scripts -->
-		<script src="js/jquery-2.0.3.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/bluebird.min.js"></script>
-		<script src="js/lodash.min.js"></script>
-		<script src="js/settings.js"></script>
-		<script src="js/sm.js"></script>
+    <!-- Scripts -->
+    <script src="js/jquery-2.0.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bluebird.min.js"></script>
+    <script src="js/lodash.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/sm.js"></script>
 
-		<!-- Cascading Style Sheets -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="css/custom.css" rel="stylesheet" media="screen">
-		<link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
-	</head>
-	
-	<body>
-	
-		<div class="container-fluid show check-access">
-			<div class="row">
-				<div class="col-12" id="status">
-				</div>
-			</div>
-		</div>
+    <!-- Cascading Style Sheets -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/custom.css" rel="stylesheet" media="screen">
+    <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
+  </head>
+  
+  <body>
+  
+    <div class="container-fluid show check-access">
+      <div class="row">
+        <div class="col-12" id="status">
+        </div>
+      </div>
+    </div>
 
-		<div class="main-content hidden">
+    <div class="main-content hidden">
 
-			<div class="panel panel-default sm-panel">
-			  <div class="panel-body">
-					<div class="btn-group">
-					  <button type="button" class="btn btn-info dropdown-toggle client-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="name"></span>
-							<b class="caret"></b>
-						</button>
-						<ul class="dropdown-menu client-list">
-						</ul>
-					</div>
-					<div class="btn-group">
-					  <button type="button" class="btn btn-info dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="name"></span>
-							<b class="caret"></b>
-							</button>
-						<ul class="dropdown-menu story-list">
-						</ul>
-					</div>
-					<div class="btn-group pull-right">
-					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa fa-cog"></i><b class="caret"></b>
-						</button>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="#" id="logout">Logout</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+      <div class="panel panel-default sm-panel">
+        <div class="panel-body">
+          <div class="btn-group">
+            <button type="button" class="btn btn-info dropdown-toggle client-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="name"></span>
+              <b class="caret"></b>
+            </button>
+            <ul class="dropdown-menu client-list">
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-info dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="name"></span>
+              <b class="caret"></b>
+              </button>
+            <ul class="dropdown-menu story-list">
+            </ul>
+          </div>
+          <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-cog"></i><b class="caret"></b>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#" id="logout">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-xs-12 status">
-					</div>
-				</div>
-				<div class="metadata">
-					<div class="row">
-						<div class="col-xs-3">
-							<strong>URL</strong>
-						</div>
-						<div class="col-xs-9 url">
-						</div>
-					</div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-12 status">
+          </div>
+        </div>
+        <div class="metadata">
+          <div class="row">
+            <div class="col-xs-3">
+              <strong>URL</strong>
+            </div>
+            <div class="col-xs-9 url">
+            </div>
+          </div>
 
-					<div class="row">
-						<div class="col-xs-3">
-							<strong>Title</strong>
-						</div>
-						<div class="col-xs-9 title">
-						</div>
-					</div>
+          <div class="row">
+            <div class="col-xs-3">
+              <strong>Title</strong>
+            </div>
+            <div class="col-xs-9 title">
+            </div>
+          </div>
 
-					<div class="row">
-						<div class="col-xs-3">
-							<strong>Pub Date</strong>
-						</div>
-						<div class="col-xs-3 pubdate">
-						</div>
-						<div class="col-xs-3">
-							<strong>Source</strong>
-						</div>
-						<div class="col-xs-3 source">
-						</div>
-					</div>
-				</div>
+          <div class="row">
+            <div class="col-xs-3">
+              <strong>Pub Date</strong>
+            </div>
+            <div class="col-xs-3 pubdate">
+            </div>
+            <div class="col-xs-3">
+              <strong>Source</strong>
+            </div>
+            <div class="col-xs-3 source">
+            </div>
+          </div>
+        </div>
 
-			</div>
+      </div>
 
-		</div>
+    </div>
 
-	</body>
+  </body>
 </html>
