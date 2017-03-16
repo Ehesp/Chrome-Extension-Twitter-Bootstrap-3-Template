@@ -111,7 +111,7 @@ var show_main = function() {
   $('.main-content').removeClass('hidden').addClass('show');
   $('#status').empty();
   populate_dropdowns();
-  // load_url_
+  load_url_and_metadata();
 }
 
 var set_api_token = function(token) {
@@ -140,4 +140,28 @@ var populate_dropdowns = function() {
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
       });
+}
+
+var load_url_and_metadata = function() {
+  chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+    var url = tabs[0].url;
+    $.post(HOST + "get_article_metadata",
+        {url: url})
+      .done(function(data) {
+        $('.metadata .url').text(data.result.canonical_url)
+        $('.metadata .title').text(data.result.title)
+        $('.metadata .pubdate').text(data.result.published_at)
+      })
+    .fail(function(jqHxr, textStatus) {
+      $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
+      });
+
+    chrome.storage.local.get({urls: []}, function(data) {
+      var urls = data.urls;
+      urls.push(url);
+      chrome.storage.local.set({urls: urls}, function() {
+        $('#urls').append($('<div>' + url + '</div>'));
+      });
+    });
+  });
 }

@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
     <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="ShareableMetrics">
 		<meta name="author" content="ShareableMetrics">
 
@@ -24,21 +25,6 @@
 	<body>
 	
 		<div class="container-fluid show check-access">
-<!--
-			<div class="row">
-				<div class="col-md-12">
-					<button class="btn btn-primary" id="add-current-page">Add current page</button>
-				</div>
-			</div>
-			-->
-<!-- 			<div class="row">
-				<div class="col-6">
-					<div id="current-client">Current client</div>
-				</div>
-				<div class="col-6">
-					<div id="current-story">Current story</div>
-				</div>
-			</div> -->
 			<div class="row">
 				<div class="col-12" id="status">
 				</div>
@@ -46,92 +32,81 @@
 		</div>
 
 		<div class="main-content hidden">
-			<nav class="navbar navbar-default" role="navigation">
-<!-- 				<div class="navbar-header">
-					<a class="navbar-brand" href="#">
-						<img alt="ShareableMetrics" src="img/icon48.png" height="48"/>
-					</a>
-				</div> -->
-				<div class="collapse navbar-collapse navbar-ex1-collapse">
-					<ul class="nav navbar-nav">
-<!-- 						<li>
-							<a id="add-url" href="#"><i class="fa fa-lg fa-plus-square" title="Add URL"></i></a>
-						</li>
-						<li>
-							<a id="import" href="#"><i class="fa fa-lg fa-cloud-upload" title="Import to ShareableMetrics"></i></a>
-						</li> -->
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle client-dropdown" data-toggle="dropdown">
-								<span class="name"></span>
-								<b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu client-list">
-<!-- 								<li>
-									<a href="#" class="client-list-item">Amazon</a>
-								</li>
-								<li>
-									<a href="#" class="client-list-item">Healthcare</a>
-								</li>
-								<li>
-									<a href="#" class="client-list-item">Home Technology</a>
-								</li> -->
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle story-dropdown" data-toggle="dropdown">
-								<span class="name"></span>
-								<b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu story-list">
-							</ul>
-						</li>
-					</ul>
 
-					<ul class="nav navbar-nav navbar-right">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i><b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="#" id="logout">Logout</a>
-								</li>
-							</ul>
-						</li>
+			<nav class="navbar navbar-default">
+			  <div class="container-fluid">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			    </div>
 
-					</ul>
+	    		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle client-dropdown" data-toggle="dropdown">
+									<span class="name"></span>
+									<b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu client-list">
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle story-dropdown" data-toggle="dropdown">
+									<span class="name"></span>
+									<b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu story-list">
+								</ul>
+							</li>
+						</ul>
+
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i><b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#" id="logout">Logout</a>
+									</li>
+								</ul>
+							</li>
+
+						</ul>
+					</div>
 				</div>
 			</nav>
 
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-sm-12 status">
+					<div class="col-xs-12 status">
 					</div>
 				</div>
 				<div class="row metadata">
-					<div class="col-sm-1">
-						<label>URL</label>
+					<div class="col-xs-3">
+						<strong>URL</strong>
 					</div>
-					<div class="col-sm-11 url">
-						url goes here
-					</div>
-
-					<div class="col-sm-1">
-						<label>Title</label>
-					</div>
-					<div class="col-sm-11 title">
-						title...
+					<div class="col-xs-9 url">
 					</div>
 
-					<div class="col-sm-1">
-						<label>Pub Date</label>
+					<div class="col-xs-3">
+						<strong>Title</strong>
 					</div>
-					<div class="col-sm-5 pubdate">
-						pub...
+					<div class="col-xs-9 title">
 					</div>
-					<div class="col-sm-1">
-						<label>Source</label>
+
+					<div class="col-xs-3">
+						<strong>Pub Date</strong>
 					</div>
-					<div class="col-sm-5 source">
-						source...
+					<div class="col-xs-3 pubdate">
+					</div>
+					<div class="col-xs-3">
+						<strong>Source</strong>
+					</div>
+					<div class="col-xs-3 source">
 					</div>
 				</div>
 
