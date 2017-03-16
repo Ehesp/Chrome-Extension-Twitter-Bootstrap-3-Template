@@ -1,6 +1,10 @@
 var logged_in = false;
 var sm_api_token = '';
 var selected_client_id = '';
+var selected_story_id = '';
+var metadata_result = {};
+var source_result = {};
+var stats_result = {};
 
 $( document ).ready(function() {
   $('#status').append($('<div>Checking access...</div>'));
@@ -85,6 +89,8 @@ $( document ).ready(function() {
     });
   });
 
+  // Functions below are in use
+
   $('#logout').on('click', function() {
     chrome.storage.local.remove("sm_api_token", function() {
       $('.main-content').removeClass('show').addClass('hidden');
@@ -101,6 +107,30 @@ $( document ).ready(function() {
     $('.story-list li.client-' + selected_client_id).removeClass('hidden');
     $('.story-dropdown .name').text($('.story-list li.client-' + selected_client_id + ' a:first').text())
   })
+
+  $('.story-list').on('click', function(e) {
+    $t = $(e.target)
+    selected_story_id = $t.data('id')
+    $('.story-dropdown .name').text($t.text())
+  })
+
+  $('.add-to-story').on('click', function(e) {
+    $.post(HOST + "add_article",
+      {
+        story_id: selected_story_id,
+        client_id: selected_client_id,
+        metadata: metadata_result,
+        source: source_result,
+        stats: stats_result
+      })
+      .done(function(data) {
+        console.log("done", data);
+      })
+    .fail(function(jqHxr, textStatus) {
+      $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
+      });
+    });
+
 
 });
 
@@ -137,6 +167,7 @@ var populate_dropdowns = function() {
       $('.story-list').html(_.flatten(r));
       // TODO This needs to be the last selected one, or the user's default client
       $('.client-list a:first').click()
+      $('.story-list a:first').click()
     })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
@@ -152,6 +183,7 @@ var load_url_and_metadata = function() {
         $('.metadata .url').text(data.result.canonical_url)
         $('.metadata .title').text(data.result.title)
         $('.metadata .pubdate').text(data.result.published_at_formatted)
+        metadata_result = data.result
         load_source(data.result.canonical_url);
         load_stats(data.result.canonical_url);
       })
@@ -174,6 +206,7 @@ var load_source = function(url) {
       {url: url})
     .done(function(data) {
       $('.metadata .source').text(data.source)
+      source_result = data
     })
   .fail(function(jqHxr, textStatus) {
     $('.main-content .status').append($('<div>Load source failed: ' + textStatus + '</div>'));
@@ -187,6 +220,7 @@ var load_stats = function(url) {
         client_id: selected_client_id
       })
     .done(function(data) {
+      stats_result = data
       $('.stats .loading').removeClass('loading')
       $('.stats .facebook').text(data.facebook_total_formatted)
       $('.stats .twitter').text(data.twitter_formatted)

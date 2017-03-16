@@ -45,6 +45,18 @@ section { padding: 5px;}
   padding: 3px;
 }
 
+.bottom-panel {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.bottom-row {
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 3px;
+}
+
 .stats th {
   width: 20%;
 }
