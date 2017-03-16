@@ -200,15 +200,16 @@ var load_url_and_metadata = function() {
       $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
       });
 
-    chrome.storage.local.get({urls: []}, function(data) {
-      var urls = data.urls;
-      urls.push(url);
-      chrome.storage.local.set({urls: urls}, function() {
-        $('#urls').append($('<div>' + url + '</div>'));
-      });
+    chrome.tabs.executeScript(tabs[0].id, {'file': 'js/get-metadata.js'}, function(r) {
+      console.log(r);
+      if (r.length > 0 && r[0] != null) {
+        $('#summary').val(r[0])
+      }
     });
+
   });
-}
+
+} // end of document.ready
 
 var load_source = function(url) {
   $.post(HOST + "get_article_source",
