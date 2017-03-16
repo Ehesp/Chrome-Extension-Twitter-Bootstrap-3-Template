@@ -123,7 +123,10 @@ $( document ).ready(function() {
         client_id: selected_client_id,
         metadata: metadata_result,
         source: source_result,
-        stats: stats_result
+        stats: stats_result,
+        summary: $('#summary').val(),
+        notes: $('#notes').val(),
+        tone: $('#tone').val(),
       })
       .done(function(data) {
         console.log("done", data);
