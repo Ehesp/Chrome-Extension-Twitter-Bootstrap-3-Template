@@ -55,10 +55,6 @@ $( document ).ready(function() {
     });
   });
 
-  $('.client-list-item').on('click', function(e) {
-    console.log("Clicked ", e);
-  });
-
   $('#add-url').on('click', function(e) {
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
         var url = tabs[0].url;
@@ -91,6 +87,19 @@ $( document ).ready(function() {
 
   // Functions below are in use
 
+  // Just for debugging
+  chrome.storage.onChanged.addListener(function(changes, namespace) {
+        for (key in changes) {
+          var storageChange = changes[key];
+          console.log('Storage key "%s" in namespace "%s" changed. ' +
+                      'Old value was "%s", new value is "%s".',
+                      key,
+                      namespace,
+                      storageChange.oldValue,
+                      storageChange.newValue);
+        }
+      });
+
   $('#logout').on('click', function() {
     chrome.storage.local.remove("sm_api_token", function() {
       $('.main-content').removeClass('show').addClass('hidden');
@@ -102,11 +111,12 @@ $( document ).ready(function() {
   $('.client-list').on('click', function(e) {
     $t = $(e.target)
     selected_client_id = $t.data('id')
+    chrome.storage.local.set({sm_selected_client_id: selected_client_id}, function() {
+    });
     $('.client-dropdown .name').text($t.text())
     $('.story-list li').addClass('hidden');
     $('.story-list li.client-' + selected_client_id).removeClass('hidden');
     selected_stories = []
-    console.log("selected_stories is now ", selected_stories);
     update_add_to_story_button()
     $('.story-badge').remove()
   })
@@ -121,7 +131,6 @@ $( document ).ready(function() {
     })
     selected_stories.push($t.data('id'))
     update_add_to_story_button()
-    console.log("selected_stories is now ", selected_stories);
     $t.addClass('hidden')
     return false;
   })
@@ -141,7 +150,6 @@ $( document ).ready(function() {
         tone: $('#tone').val(),
       })
       .done(function(data) {
-        console.log("done", data);
         $('.add-to-story').addClass('hidden')
         $('.add-to-story').removeClass("loading")
         update_add_to_story_button()
@@ -150,11 +158,6 @@ $( document ).ready(function() {
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
       });
-    });
-
-  // TODO Not currently used
-  $('.go-to-story').on('click', function(e) {
-    chrome.tabs.create({ url: APP_HOST + "clients/" + selected_client_id + "/stories/" + selected_story_ids });
     });
 
 });
@@ -167,7 +170,7 @@ var show_main = function() {
   // TODO This doesn't seem to remove focus from that first button
   $('button.client-dropdown').blur();
   populate_dropdowns();
-  load_url_and_metadata();
+  // load_url_and_metadata();
 }
 
 var set_api_token = function(token) {
@@ -181,7 +184,7 @@ var populate_dropdowns = function() {
   $.get(HOST + "clients_and_stories")
     .done(function(data) {
       var r = data.clients.map(function(client) {
-        return $('<li><a href="#" class="client-list-item" data-id="' + client.id + '">' + client.name + '</a></li>')
+        return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
       })
       $('.client-list').html(r);
       var r = data.clients.map(function(client) {
@@ -190,9 +193,15 @@ var populate_dropdowns = function() {
         })
       })
       $('.story-list').html(_.flatten(r));
-      // TODO This needs to be the last selected one, or the user's default client
-      $('.client-list a:first').click()
-      // $('.story-list a:first').click()
+      chrome.storage.local.get({sm_selected_client_id: ''}, function(localdata) {
+        if (localdata.sm_selected_client_id=='') {
+          sm_selected_client_id = data.default_client_id;
+        } else {
+          sm_selected_client_id = localdata.sm_selected_client_id;
+        }
+        $('.client-list a.client-' + sm_selected_client_id).click();
+        load_url_and_metadata();
+      });
     })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
@@ -217,7 +226,6 @@ var load_url_and_metadata = function() {
       });
 
     chrome.tabs.executeScript(tabs[0].id, {'file': 'js/get-metadata.js'}, function(r) {
-      console.log(r);
       if (r.length > 0 && r[0] != null) {
         $('#summary').val(r[0])
       }
@@ -266,7 +274,6 @@ var remove_story = function(elt) {
   selected_stories = selected_stories.filter(function(array_id) {
     return array_id != story_id;
   })
-  console.log("selected_stories is now ", selected_stories);
   update_add_to_story_button()
   $('.story-list-item-'+ story_id).removeClass('hidden')
 }
