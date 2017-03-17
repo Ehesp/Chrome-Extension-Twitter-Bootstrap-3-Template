@@ -69,6 +69,31 @@ section { padding: 5px;}
   min-width: 4rem;
 }
 
+.stories .label {
+  margin-right: 3px;
+}
+.stories .label-default {
+  background-color: #ccc;
+  color: #000;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: normal;
+  margin-bottom: 3px;
+}
+.stories  .story-remove {
+  cursor: pointer;
+  margin-left: 3px;
+}
+
+.stories-panel {
+  min-height: 26px;
+}
+
+.stories-panel .panel-body {
+  padding-bottom: 0;
+}
+
+
 /* For animated ellipsis */
 .loading:after {
   overflow: hidden;

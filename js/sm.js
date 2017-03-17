@@ -1,7 +1,7 @@
 var logged_in = false;
 var sm_api_token = '';
 var selected_client_id = '';
-var selected_story_id = '';
+var selected_story_ids = [];
 var metadata_result = {};
 var source_result = {};
 var stats_result = {};
@@ -105,13 +105,25 @@ $( document ).ready(function() {
     $('.client-dropdown .name').text($t.text())
     $('.story-list li').addClass('hidden');
     $('.story-list li.client-' + selected_client_id).removeClass('hidden');
-    $('.story-dropdown .name').text($('.story-list li.client-' + selected_client_id + ' a:first').text())
+    selected_stories = []
+    console.log("selected_stories is now ", selected_stories);
+    update_add_to_story_button()
+    $('.story-badge').remove()
   })
 
   $('.story-list').on('click', function(e) {
     $t = $(e.target)
-    selected_story_id = $t.data('id')
-    $('.story-dropdown .name').text($t.text())
+    var elt = $('<span class="label label-default story-badge story-badge-' + $t.data('id') + '">' + $t.text() + '<span class="story-remove" aria-hidden="true">&times;</span></span>')
+    elt.data('story-id', $t.data('id'))
+    $('.stories').append(elt)
+    elt.find('.story-remove').on('click', function() {
+      remove_story(elt)
+    })
+    selected_stories.push($t.data('id'))
+    update_add_to_story_button()
+    console.log("selected_stories is now ", selected_stories);
+    $t.addClass('hidden')
+    return false;
   })
 
   $('.add-to-story').on('click', function(e) {
@@ -119,7 +131,7 @@ $( document ).ready(function() {
     $('.add-to-story').addClass("loading")
     $.post(HOST + "add_article",
       {
-        story_id: selected_story_id,
+        story_ids: selected_stories,
         client_id: selected_client_id,
         metadata: metadata_result,
         source: source_result,
@@ -132,7 +144,7 @@ $( document ).ready(function() {
         console.log("done", data);
         $('.add-to-story').addClass('hidden')
         $('.add-to-story').removeClass("loading")
-        $('.add-to-story').text("Add to story")
+        update_add_to_story_button()
         $('.go-to-story').removeClass('hidden')
       })
     .fail(function(jqHxr, textStatus) {
@@ -140,8 +152,9 @@ $( document ).ready(function() {
       });
     });
 
+  // TODO Not currently used
   $('.go-to-story').on('click', function(e) {
-    chrome.tabs.create({ url: APP_HOST + "clients/" + selected_client_id + "/stories/" + selected_story_id });
+    chrome.tabs.create({ url: APP_HOST + "clients/" + selected_client_id + "/stories/" + selected_story_ids });
     });
 
 });
@@ -173,13 +186,13 @@ var populate_dropdowns = function() {
       $('.client-list').html(r);
       var r = data.clients.map(function(client) {
         return client.stories.map(function(story) {
-          return $('<li class="client-' + client.id + '"><a href="#" class="story-list-item" data-id="' + story.id + '">' + story.name + '</a></li>')
+          return $('<li class="client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
         })
       })
       $('.story-list').html(_.flatten(r));
       // TODO This needs to be the last selected one, or the user's default client
       $('.client-list a:first').click()
-      $('.story-list a:first').click()
+      // $('.story-list a:first').click()
     })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
@@ -244,4 +257,29 @@ var load_stats = function(url) {
   .fail(function(jqHxr, textStatus) {
     $('.main-content .status').append($('<div>Load stats failed: ' + textStatus + '</div>'));
     });
+}
+
+var remove_story = function(elt) {
+  $elt = $(elt)
+  story_id = $elt.data('story-id')
+  $elt.remove()
+  selected_stories = selected_stories.filter(function(array_id) {
+    return array_id != story_id;
+  })
+  console.log("selected_stories is now ", selected_stories);
+  update_add_to_story_button()
+  $('.story-list-item-'+ story_id).removeClass('hidden')
+}
+
+var update_add_to_story_button = function() {
+  if (selected_stories.length==0) {
+    $('.add-to-story').addClass('disabled')
+    $('.add-to-story').text("Add to stories")
+  } else if (selected_stories.length==1) {
+    $('.add-to-story').removeClass('disabled')
+    $('.add-to-story').text("Add to story")
+  } else {
+    $('.add-to-story').text("Add to stories")
+    $('.add-to-story').removeClass('disabled')
+  }
 }
