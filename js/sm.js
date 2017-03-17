@@ -41,52 +41,6 @@ $( document ).ready(function() {
     }
   });
 
-  // $.get(HOST + "check_login")
-  //   .done(function(data) {
-  //     $('#status').append($('<div>Access okay</div>'));
-  //     })
-  //   .fail(function(jqHxr, textStatus) {
-  //     $('#status').append($('<div>Access failed: ' + textStatus + '</div>'));
-  //     });
-
-  chrome.storage.local.get({urls: []}, function(data) {
-    data.urls.map(function(url) {
-      $('#urls').append($('<div>' + url + '</div>'));
-    });
-  });
-
-  $('#add-url').on('click', function(e) {
-    chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-        var url = tabs[0].url;
-        chrome.storage.local.get({urls: []}, function(data) {
-          var urls = data.urls;
-          urls.push(url);
-          chrome.storage.local.set({urls: urls}, function() {
-            $('#urls').append($('<div>' + url + '</div>'));
-          });
-        });
-    });
-  });
-
-  $('#import').on('click', function(e) {
-    chrome.storage.local.get({urls: []}, function(data) {
-      var urls = data.urls;
-      console.log("We'll upload ", urls)
-      // http://localhost:3000/clients/392/stories/1946/article_batches
-      // http://app.shareablemetrics.com/clients/386/stories/1904
-      $.post("http://app.shareablemetrics.com/clients/386/stories/1904/article_batches.json",
-        {article_batch: {name: 'From extension', story_id: '1904', urls_array: urls}}, function(data, textStatus) {
-          console.log(data);
-          console.log(textStatus);
-        });
-      chrome.storage.local.set({urls: []}, function() {
-        $('#urls').empty();
-      });
-    });
-  });
-
-  // Functions below are in use
-
   // Just for debugging
   chrome.storage.onChanged.addListener(function(changes, namespace) {
         for (key in changes) {
@@ -170,7 +124,6 @@ var show_main = function() {
   // TODO This doesn't seem to remove focus from that first button
   $('button.client-dropdown').blur();
   populate_dropdowns();
-  // load_url_and_metadata();
 }
 
 var set_api_token = function(token) {
@@ -230,10 +183,9 @@ var load_url_and_metadata = function() {
         $('#summary').val(r[0])
       }
     });
-
   });
 
-} // end of document.ready
+}
 
 var load_source = function(url) {
   $.post(HOST + "get_article_source",
