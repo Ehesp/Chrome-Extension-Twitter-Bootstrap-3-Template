@@ -1,6 +1,7 @@
 var logged_in = false;
 var sm_api_token = '';
 var selected_client_id = '';
+var current_url = '';
 var selected_story_ids = [];
 var metadata_result = {};
 var source_result = {};
@@ -171,8 +172,10 @@ var load_url_and_metadata = function() {
         $('.metadata .title').text(data.result.title)
         $('.metadata .pubdate').text(data.result.published_at_formatted)
         metadata_result = data.result
+        current_url = data.result.canonical_url
         load_source(data.result.canonical_url);
-        load_stats(data.result.canonical_url);
+        request_uuid = generateUUID();
+        load_stats();
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
@@ -199,20 +202,25 @@ var load_source = function(url) {
     });
 }
 
-var load_stats = function(url) {
+var load_stats = function() {
   $.post(HOST + "get_article_stats",
       {
-        url: url,
-        client_id: selected_client_id
+        url: current_url,
+        client_id: selected_client_id,
+        request_id: request_uuid
       })
-    .done(function(data) {
-      stats_result = data
-      $('.stats .loading').removeClass('loading')
-      $('.stats .facebook').text(data.facebook_total_formatted)
-      $('.stats .twitter').text(data.twitter_formatted)
-      $('.stats .google').text(data.google_share_formatted)
-      $('.stats .linkedin').text(data.linkedin_formatted)
-      $('.stats .pinterest').text(data.pinterest_formatted)
+    .done(function(data, textStatus, xhr) {
+      if (xhr.status==202) {
+        setTimeout(load_stats, 500);
+      } else {
+        stats_result = data
+        $('.stats .loading').removeClass('loading')
+        $('.stats .facebook').text(data.facebook_total_formatted)
+        $('.stats .twitter').text(data.twitter_formatted)
+        $('.stats .google').text(data.google_share_formatted)
+        $('.stats .linkedin').text(data.linkedin_formatted)
+        $('.stats .pinterest').text(data.pinterest_formatted)
+      }
     })
   .fail(function(jqHxr, textStatus) {
     $('.main-content .status').append($('<div>Load stats failed: ' + textStatus + '</div>'));
@@ -242,3 +250,15 @@ var update_add_to_story_button = function() {
     $('.add-to-story').removeClass('disabled')
   }
 }
+
+var generateUUID = function() {
+  var d, uuid;
+  d = (new Date).getTime();
+  uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r;
+    r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c === 'x' ? r : r & 0x3 | 0x8).toString(16);
+  });
+  return uuid;
+};
