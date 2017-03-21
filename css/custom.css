@@ -6,7 +6,7 @@
 
 body, section {			/* Change width and height to own preferences */
 	width: 500px;
-	height: 526px;
+	height: 541px;
 	overflow-x: hidden;
   padding: 3px;
 }
@@ -69,6 +69,10 @@ section { padding: 5px;}
   min-width: 4rem;
 }
 
+.add-to-story i {
+  margin-right: 0.5rem;
+}
+
 .stories .label {
   margin-right: 3px;
 }
@@ -93,6 +97,9 @@ section { padding: 5px;}
   padding-bottom: 0;
 }
 
+.text-field {
+  min-height: 34px;
+}
 
 /* For animated ellipsis */
 .loading:after {

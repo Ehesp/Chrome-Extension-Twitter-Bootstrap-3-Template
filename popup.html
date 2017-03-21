@@ -13,6 +13,9 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bluebird.min.js"></script>
     <script src="js/lodash.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.js"></script>
+
     <script src="js/settings.js"></script>
     <script src="js/sm.js"></script>
 
@@ -20,6 +23,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/custom.css" rel="stylesheet" media="screen">
     <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link href="css/daterangepicker.css" rel="stylesheet" media="screen">
   </head>
   
   <body>
@@ -79,19 +83,44 @@
         <div class="metadata">
           <div class="row">
             <div class="col-xs-2"><strong>URL</strong></div>
-            <div class="col-xs-10 url"></div>
+            <div class="col-xs-10 url text-field loading"></div>
           </div>
 
           <div class="row">
             <div class="col-xs-2"><strong>Title</strong></div>
-            <div class="col-xs-10 title"></div>
+            <div class="col-xs-10 title text-field loading"></div>
           </div>
 
           <div class="row">
             <div class="col-xs-2"><strong>Source</strong></div>
-            <div class="col-xs-4 source"></div>
+            <div class="col-xs-4 source loading"></div>
             <div class="col-xs-3"><strong>Published</strong></div>
-            <div class="col-xs-3 pubdate"></div>
+            <div class="col-xs-3 pubdate loading"></div>
+          </div>
+        </div>
+
+        <div class="metadata-editable hidden form-inline">
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2"><label>URL</label></div>
+              <div class="col-xs-10 text-field loading"><textarea class="form-control" rows="2" id="url"></textarea></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2"><label>Title</label></div>
+              <div class="col-xs-10 text-field loading"><textarea class="form-control" rows="2" id="title"></textarea></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2"><label>Source</label></div>
+              <div class="col-xs-4 source loading"></div>
+              <div class="col-xs-3"><label>Published</label></div>
+              <div class="col-xs-3 pubdate loading"><input class="form-control" id="pubdate"></div>
+            </div>
           </div>
         </div>
 

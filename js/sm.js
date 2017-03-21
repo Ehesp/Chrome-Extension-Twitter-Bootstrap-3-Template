@@ -93,6 +93,11 @@ $( document ).ready(function() {
   $('.add-to-story').on('click', function(e) {
     $('.add-to-story').text("")
     $('.add-to-story').addClass("loading")
+    if (metadata_result.editable==true) {
+      metadata_result.canonical_url = $('.metadata-editable #url').val();
+      metadata_result.title = $('.metadata-editable #title').val();
+      metadata_result.published_at = $('.metadata-editable #pubdate').val();
+    }
     $.post(HOST + "add_article",
       {
         story_ids: selected_stories,
@@ -105,10 +110,9 @@ $( document ).ready(function() {
         tone: $('#tone').val(),
       })
       .done(function(data) {
-        $('.add-to-story').addClass('hidden')
-        $('.add-to-story').removeClass("loading")
-        update_add_to_story_button()
-        $('.go-to-story').removeClass('hidden')
+        $('.add-to-story').addClass('disabled')
+        $('.add-to-story').removeClass('loading')
+        $('.add-to-story').html($('<i class="fa fa-check"></i><span>Done</span>'))
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
@@ -164,15 +168,29 @@ var populate_dropdowns = function() {
 
 var load_url_and_metadata = function() {
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
-    console.log("load_url_and_metadata", tabs);
     var url = tabs[0].url;
     $.post(HOST + "get_article_metadata",
         {url: url})
       .done(function(data) {
-        $('.metadata .url').text(data.result.canonical_url)
-        $('.metadata .title').text(data.result.title)
-        $('.metadata .pubdate').text(data.result.published_at_formatted)
         metadata_result = data.result
+        if (data.result.editable==true) {
+          $('.metadata').addClass('hidden')
+          $('.metadata-editable').removeClass('hidden')
+          $('.metadata-editable #url').val(data.result.canonical_url)
+          $('.metadata-editable #title').val(data.result.title)
+          $('.metadata-editable #pubdate').daterangepicker(
+            { "singleDatePicker": true,
+              "showDropdowns": true,
+              "alwaysShowCalendars": true,
+              "startDate": moment(data.result.published_at)
+            }
+          );
+        } else {
+          $('.metadata .url').text(data.result.canonical_url)
+          $('.metadata .title').text(data.result.title)
+          $('.metadata .pubdate').text(data.result.published_at_formatted)
+        }
+        $('.metadata .loading, .metadata-editable .loading').removeClass('loading')
         current_url = data.result.canonical_url
         load_source(data.result.canonical_url);
         request_uuid = generateUUID();
@@ -195,7 +213,7 @@ var load_source = function(url) {
   $.post(HOST + "get_article_source",
       {url: url})
     .done(function(data) {
-      $('.metadata .source').text(data.source)
+      $('.metadata .source, .metadata-editable .source').text(data.source)
       source_result = data
     })
   .fail(function(jqHxr, textStatus) {
