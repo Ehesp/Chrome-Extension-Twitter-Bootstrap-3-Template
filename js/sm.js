@@ -163,7 +163,8 @@ var populate_dropdowns = function() {
 }
 
 var load_url_and_metadata = function() {
-  chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+  chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
+    console.log("load_url_and_metadata", tabs);
     var url = tabs[0].url;
     $.post(HOST + "get_article_metadata",
         {url: url})
