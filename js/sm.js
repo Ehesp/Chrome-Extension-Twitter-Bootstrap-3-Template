@@ -108,6 +108,7 @@ $( document ).ready(function() {
         summary: $('#summary').val(),
         notes: $('#notes').val(),
         tone: $('#tone').val(),
+        author: $('#author').val(),
       })
       .done(function(data) {
         $('.add-to-story').addClass('disabled')
@@ -201,9 +202,12 @@ var load_url_and_metadata = function() {
       });
 
     chrome.tabs.executeScript(tabs[0].id, {'file': 'js/get-metadata.js'}, function(r) {
-      if (r.length > 0 && r[0] != null) {
-        $('#summary').val(r[0])
-      }
+      var metadata = r[0];
+      $('#summary').val(metadata.description[0][0])
+      var authors = metadata.author.map(function(m) {
+        return m[0]
+      })
+      $('#author').val(_.first(_.reject(authors, _.isNil)));
     });
   });
 

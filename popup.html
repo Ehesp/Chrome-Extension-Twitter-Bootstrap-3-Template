@@ -151,26 +151,34 @@
           </div>
         </div>
 
-        <div class="user">
+        <div class="user form-inline">
           <div class="row">
-            <div class="col-xs-2"><strong>Summary</strong></div>
-            <div class="col-xs-10"><textarea class="form-control" rows="3" id="summary"></textarea></div>
+            <div class="form-group">
+              <div class="col-xs-2"><strong>Summary</strong></div>
+              <div class="col-xs-10"><textarea class="form-control" rows="3" id="summary"></textarea></div>
+            </div>
           </div>
 
           <div class="row">
-            <div class="col-xs-2"><strong>Notes</strong></div>
-            <div class="col-xs-10"><textarea class="form-control" rows="3" id="notes"></textarea></div>
+            <div class="form-group">
+              <div class="col-xs-2"><strong>Notes</strong></div>
+              <div class="col-xs-10"><textarea class="form-control" rows="3" id="notes"></textarea></div>
+            </div>
           </div>
 
           <div class="row">
-            <div class="col-xs-2"><strong>Tone</strong></div>
-            <div class="col-xs-10">
-              <select class="form-control" id="tone">
-                <option>Select...</option>
-                <option>Positive</option>
-                <option>Neutral</option>
-                <option>Negative</option>
-              </select>
+            <div class="form-group">
+              <div class="col-xs-2"><label>Tone</label></div>
+              <div class="col-xs-4">
+                <select class="form-control" id="tone">
+                  <option>Select...</option>
+                  <option>Positive</option>
+                  <option>Neutral</option>
+                  <option>Negative</option>
+                </select>
+              </div>
+              <div class="col-xs-2"><label>Author</label></div>
+              <div class="col-xs-4"><input class="form-control" type="string" id="author"></div>
             </div>
           </div>
 
