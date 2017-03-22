@@ -97,6 +97,10 @@ $( document ).ready(function() {
       metadata_result.canonical_url = $('.metadata-editable #url').val();
       metadata_result.title = $('.metadata-editable #title').val();
       metadata_result.published_at = $('.metadata-editable #pubdate').val();
+      var summary = $('#summary').val();
+      var notes = $('#notes').val();
+      var tone = $('#tone').val();
+      var author = $('#author').val();
     }
     $.post(HOST + "add_article",
       {
@@ -105,10 +109,10 @@ $( document ).ready(function() {
         metadata: metadata_result,
         source: source_result,
         stats: stats_result,
-        summary: $('#summary').val(),
-        notes: $('#notes').val(),
-        tone: $('#tone').val(),
-        author: $('#author').val(),
+        summary: summary,
+        notes: notes,
+        tone: tone,
+        author: author,
       })
       .done(function(data) {
         $('.add-to-story').addClass('disabled')
@@ -171,10 +175,13 @@ var load_url_and_metadata = function() {
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
     var url = tabs[0].url;
     $.post(HOST + "get_article_metadata",
-        {url: url})
+        {url: url,
+          client_id: sm_selected_client_id})
       .done(function(data) {
         metadata_result = data.result
         if (data.result.editable==true) {
+          $('body').removeClass('short').addClass('tall')
+          $('.user').removeClass('hidden')
           $('.metadata').addClass('hidden')
           $('.metadata-editable').removeClass('hidden')
           $('.metadata-editable #url').val(data.result.canonical_url)

@@ -6,9 +6,16 @@
 
 body, section {			/* Change width and height to own preferences */
 	width: 500px;
-	height: 541px;
 	overflow-x: hidden;
   padding: 3px;
+}
+
+body.short {
+  height: 340px;
+}
+
+body.tall {
+  height: 540px;
 }
 
 /* Basic style tweaks */
