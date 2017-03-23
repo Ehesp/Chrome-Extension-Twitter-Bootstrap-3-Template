@@ -7,7 +7,10 @@
 		"storage",
 		"activeTab",
 		"http://localhost:3000/",
-		"http://app.shareablemetrics.com/"
+		"http://app.shareablemetrics.com/",
+		"https://app.shareablemetrics.com/",
+    "http://plumeapp-staging.herokuapp.com/",
+    "https://plumeapp-staging.herokuapp.com/"
 	],
 	"icons": {
 		"16": "img/icon16.png",
@@ -28,9 +31,13 @@
 	],
 	"content_scripts": [
     {
-      "matches": ["http://*.shareablemetrics.com/*",
-    		"https://*.shareablemetrics.com/*",
-    		"http://localhost/*"],
+      "matches": [
+        "http://plumeapp-staging.herokuapp.com/*",
+        "https://plumeapp-staging.herokuapp.com/*",
+    		"http://localhost/*",
+				"http://*.shareablemetrics.com/*",
+    		"https://*.shareablemetrics.com/*"
+	    	],
       "js": ["js/get-auth-token.js"]
     }
   ]

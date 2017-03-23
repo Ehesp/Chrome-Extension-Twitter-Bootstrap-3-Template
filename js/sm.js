@@ -11,12 +11,22 @@ $( document ).ready(function() {
   $('#status').append($('<div>Checking access...</div>'));
 
   chrome.storage.local.get({sm_api_token: ''}, function(data) {
+    console.log("inside the fn for the get, ", data);
     if (data.sm_api_token=='') {
-      chrome.tabs.query({'url': ['http://*.shareablemetrics.com/*',
-        'https://*.shareablemetrics.com/*',
+      console.log("sm_api_token is blank");
+      chrome.tabs.query({'url': [
+        // 'http://*.shareablemetrics.com/*',
+        // 'https://*.shareablemetrics.com/*',
+        'http://plumeapp-staging.herokuapp.com/*',
+        'https://plumeapp-staging.herokuapp.com/*',
         'http://localhost/*',
         ]}, function (tabs) {
+          console.log("in the tabs query, tabs is", tabs);
         var tabs_count = tabs.length;
+        if (tabs_count==0) {
+          show_info_window();
+          return;
+        }
         tabs.map(function(t) {
           chrome.tabs.executeScript(t.id, {'file': 'js/get-auth-token.js'}, function(r) {
             if (r.length > 0 && r[0] != null) {
@@ -26,15 +36,21 @@ $( document ).ready(function() {
               });
             }
             tabs_count = tabs_count - 1;
+            console.log("tabs_count", tabs_count);
             if (tabs_count == 0) {
+              console.log("it's 0");
               if (!logged_in) {
+                console.log("logged_in=false");
                 $('#status').append($('<div>No access token found, please log in to ShareableMetrics to use this tool.</div>'));
+              } else {
+                console.log("logged_in=true");
               }
             }
           });
         });
       });
     } else {
+      console.log("sm_api_token is not blank");
       // Already have a token
       set_api_token(data.sm_api_token)
       $('#status').append($('<div>Have access token, proceeding...</div>'));
@@ -292,3 +308,7 @@ var generateUUID = function() {
   });
   return uuid;
 };
+
+var show_info_window = function() {
+  $('.info-window').removeClass('hidden');
+}
