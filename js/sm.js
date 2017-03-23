@@ -1,5 +1,7 @@
 var logged_in = false;
 var sm_api_token = '';
+var api_host = '';
+var app_host = '';
 var selected_client_id = '';
 var current_url = '';
 var selected_story_ids = [];
@@ -10,7 +12,7 @@ var stats_result = {};
 $( document ).ready(function() {
   $('#status').append($('<div>Checking access...</div>'));
 
-  chrome.storage.local.get({sm_api_token: ''}, function(data) {
+  chrome.storage.local.get({sm_api_token: '', sm_api_host: '', sm_app_host: ''}, function(data) {
     console.log("inside the fn for the get, ", data);
     if (data.sm_api_token=='') {
       console.log("sm_api_token is blank");
@@ -31,9 +33,14 @@ $( document ).ready(function() {
           chrome.tabs.executeScript(t.id, {'file': 'js/get-auth-token.js'}, function(r) {
             if (r.length > 0 && r[0] != null) {
               set_api_token(r[0])
-              chrome.storage.local.set({sm_api_token: r[0]}, function() {
+              api_host = parseApiHost(t.url)
+              app_host = parseAppHost(t.url)
+              console.log("api_host is now", api_host);
+              console.log("app_host is now", app_host);
+              chrome.storage.local.set({sm_api_token: r[0], sm_api_host: api_host, sm_app_host: app_host}, function() {
                 show_main();
               });
+              return;
             }
             tabs_count = tabs_count - 1;
             console.log("tabs_count", tabs_count);
@@ -53,6 +60,8 @@ $( document ).ready(function() {
       console.log("sm_api_token is not blank");
       // Already have a token
       set_api_token(data.sm_api_token)
+      api_host = data.sm_api_host;
+      app_host = data.sm_app_host;
       $('#status').append($('<div>Have access token, proceeding...</div>'));
       show_main();
     }
@@ -118,7 +127,7 @@ $( document ).ready(function() {
       var tone = $('#tone').val();
       var author = $('#author').val();
     }
-    $.post(HOST + "add_article",
+    $.post(api_host + "add_article",
       {
         story_ids: selected_stories,
         client_id: selected_client_id,
@@ -160,7 +169,7 @@ var set_api_token = function(token) {
 }
 
 var populate_dropdowns = function() {
-  $.get(HOST + "clients_and_stories")
+  $.get(api_host + "clients_and_stories")
     .done(function(data) {
       var r = data.clients.map(function(client) {
         return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
@@ -190,7 +199,7 @@ var populate_dropdowns = function() {
 var load_url_and_metadata = function() {
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
     var url = tabs[0].url;
-    $.post(HOST + "get_article_metadata",
+    $.post(api_host + "get_article_metadata",
         {url: url,
           client_id: sm_selected_client_id})
       .done(function(data) {
@@ -237,7 +246,7 @@ var load_url_and_metadata = function() {
 }
 
 var load_source = function(url) {
-  $.post(HOST + "get_article_source",
+  $.post(api_host + "get_article_source",
       {url: url})
     .done(function(data) {
       $('.metadata .source, .metadata-editable .source').text(data.source)
@@ -249,7 +258,7 @@ var load_source = function(url) {
 }
 
 var load_stats = function() {
-  $.post(HOST + "get_article_stats",
+  $.post(api_host + "get_article_stats",
       {
         url: current_url,
         client_id: selected_client_id,
@@ -311,4 +320,22 @@ var generateUUID = function() {
 
 var show_info_window = function() {
   $('.info-window').removeClass('hidden');
+}
+
+var parseApiHost = function(url) {
+  var parser = document.createElement('a');
+  parser.href = url;
+  console.log(parser);
+  console.log(parser.protocol);
+  console.log(parser.host);
+  return parser.protocol + '//' + parser.host + '/api/v1/';
+}
+
+var parseAppHost = function(url) {
+  var parser = document.createElement('a');
+  parser.href = url;
+  console.log(parser);
+  console.log(parser.protocol);
+  console.log(parser.host);
+  return parser.protocol + '//' + parser.host + '/';
 }
