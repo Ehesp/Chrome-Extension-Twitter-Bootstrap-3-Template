@@ -108,6 +108,15 @@ section { padding: 5px;}
   min-height: 34px;
 }
 
+.settings-menu div {
+  white-space: nowrap;
+  padding: 3px 20px;
+}
+
+.fullname {
+  margin: auto 5px;
+}
+
 /* For animated ellipsis */
 .loading:after {
   overflow: hidden;

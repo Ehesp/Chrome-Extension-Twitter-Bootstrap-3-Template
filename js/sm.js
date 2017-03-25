@@ -1,7 +1,10 @@
 var logged_in = false;
 var sm_api_token = '';
+var fullname = '';
+var email = '';
 var api_host = '';
 var app_host = '';
+var host_only = '';
 var selected_client_id = '';
 var current_url = '';
 var selected_story_ids = [];
@@ -12,10 +15,10 @@ var stats_result = {};
 $( document ).ready(function() {
   $('#status').append($('<div>Checking access...</div>'));
 
-  chrome.storage.local.get({sm_api_token: '', sm_api_host: '', sm_app_host: ''}, function(data) {
+  chrome.storage.local.get({sm_info: {}}, function(data) {
     console.log("inside the fn for the get, ", data);
-    if (data.sm_api_token=='') {
-      console.log("sm_api_token is blank");
+    if (_.isEmpty(data.sm_info)) {
+      console.log("sm_info is empty");
       chrome.tabs.query({'url': [
         // 'http://*.shareablemetrics.com/*',
         // 'https://*.shareablemetrics.com/*',
@@ -31,13 +34,18 @@ $( document ).ready(function() {
         }
         tabs.map(function(t) {
           chrome.tabs.executeScript(t.id, {'file': 'js/get-auth-token.js'}, function(r) {
-            if (r.length > 0 && r[0] != null) {
-              set_api_token(r[0])
+            if (r.length > 0 && r[0] != null && r[0]['sm-api-token'] != null) {
+              var token = r[0]['sm-api-token'];
+              fullname = r[0]['fullname'];
+              email = r[0]['sm-email'];
+              set_api_token(token)
               api_host = parseApiHost(t.url)
               app_host = parseAppHost(t.url)
-              console.log("api_host is now", api_host);
-              console.log("app_host is now", app_host);
-              chrome.storage.local.set({sm_api_token: r[0], sm_api_host: api_host, sm_app_host: app_host}, function() {
+              host_only = parseHostOnly(t.url)
+              var sm_info = {sm_api_token: token, sm_api_host: api_host, sm_app_host: app_host, sm_host_only: host_only,
+                fullname: fullname, email: email};
+              chrome.storage.local.set({sm_info: sm_info}, function() {
+                console.log("Have set sm_info", sm_info);
                 show_main();
               });
               return;
@@ -57,11 +65,14 @@ $( document ).ready(function() {
         });
       });
     } else {
-      console.log("sm_api_token is not blank");
+      console.log("sm_info is not empty:", data.sm_info);
       // Already have a token
-      set_api_token(data.sm_api_token)
-      api_host = data.sm_api_host;
-      app_host = data.sm_app_host;
+      set_api_token(data.sm_info.sm_api_token)
+      api_host = data.sm_info.sm_api_host;
+      app_host = data.sm_info.sm_app_host;
+      host_only = data.sm_info.sm_host_only;
+      fullname = data.sm_info.fullname;
+      email = data.sm_info.email;
       $('#status').append($('<div>Have access token, proceeding...</div>'));
       show_main();
     }
@@ -81,7 +92,8 @@ $( document ).ready(function() {
       });
 
   $('#logout').on('click', function() {
-    chrome.storage.local.remove("sm_api_token", function() {
+    chrome.storage.local.remove(["sm_info"], function() {
+      set_api_token("")
       $('.main-content').removeClass('show').addClass('hidden');
       $('.check-access').removeClass('hidden').addClass('show');
       $('#status').append($('<div>Logged out of extension.</div>'));
@@ -159,6 +171,12 @@ var show_main = function() {
   // TODO This doesn't seem to remove focus from that first button
   $('button.client-dropdown').blur();
   populate_dropdowns();
+  $('.fullname').text(fullname);
+  $('.settings-menu').append($('<li role="separator" class="divider"></li>'))
+  $('.settings-menu').append($('<li><div>' + email + '</div></li>'))
+  if (!host_only.includes("shareablemetrics.com")) {
+    $('.settings-menu').append($('<li><div>' + host_only + '</div></li>'))
+  }
 }
 
 var set_api_token = function(token) {
@@ -171,6 +189,7 @@ var set_api_token = function(token) {
 var populate_dropdowns = function() {
   $.get(api_host + "clients_and_stories")
     .done(function(data) {
+      console.log("clients_and_stories returned", data);
       var r = data.clients.map(function(client) {
         return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
       })
@@ -186,6 +205,9 @@ var populate_dropdowns = function() {
           sm_selected_client_id = data.default_client_id;
         } else {
           sm_selected_client_id = localdata.sm_selected_client_id;
+        }
+        if (_.find(data.clients, function(c) {return c.id==sm_selected_client_id})==undefined) {
+          sm_selected_client_id = data.default_client_id;
         }
         $('.client-list a.client-' + sm_selected_client_id).click();
         load_url_and_metadata();
@@ -325,17 +347,17 @@ var show_info_window = function() {
 var parseApiHost = function(url) {
   var parser = document.createElement('a');
   parser.href = url;
-  console.log(parser);
-  console.log(parser.protocol);
-  console.log(parser.host);
   return parser.protocol + '//' + parser.host + '/api/v1/';
 }
 
 var parseAppHost = function(url) {
   var parser = document.createElement('a');
   parser.href = url;
-  console.log(parser);
-  console.log(parser.protocol);
-  console.log(parser.host);
   return parser.protocol + '//' + parser.host + '/';
+}
+
+var parseHostOnly = function(url) {
+  var parser = document.createElement('a');
+  parser.href = url;
+  return parser.host;
 }
