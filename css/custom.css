@@ -117,6 +117,24 @@ section { padding: 5px;}
   margin: auto 5px;
 }
 
+.info-window img {
+  margin: auto;
+  margin-top: 80px;
+  display: block;
+  width: 400px;
+}
+
+.info-window p {
+  text-align: center;
+  font-size: 2.0rem;
+  width: 400px;
+  margin: auto;
+}
+
+.info-window p.warning {
+  background-color: #fba8a8;
+}
+
 /* For animated ellipsis */
 .loading:after {
   overflow: hidden;

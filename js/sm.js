@@ -11,6 +11,7 @@ var selected_story_ids = [];
 var metadata_result = {};
 var source_result = {};
 var stats_result = {};
+var user_menu_set = false;
 
 $( document ).ready(function() {
   $('#status').append($('<div>Checking access...</div>'));
@@ -171,11 +172,14 @@ var show_main = function() {
   // TODO This doesn't seem to remove focus from that first button
   $('button.client-dropdown').blur();
   populate_dropdowns();
-  $('.fullname').text(fullname);
-  $('.settings-menu').append($('<li role="separator" class="divider"></li>'))
-  $('.settings-menu').append($('<li><div>' + email + '</div></li>'))
-  if (!host_only.includes("shareablemetrics.com")) {
-    $('.settings-menu').append($('<li><div>' + host_only + '</div></li>'))
+  if (!user_menu_set) {
+    user_menu_set = true;
+    $('.fullname').text(fullname);
+    $('.settings-menu').append($('<li role="separator" class="divider"></li>'))
+    $('.settings-menu').append($('<li><div>' + email + '</div></li>'))
+    if (!host_only.includes("shareablemetrics.com")) {
+      $('.settings-menu').append($('<li><div>' + host_only + '</div></li>'))
+    }
   }
 }
 
@@ -342,6 +346,7 @@ var generateUUID = function() {
 
 var show_info_window = function() {
   $('.info-window').removeClass('hidden');
+  $('.check-access').addClass('hidden');
 }
 
 var parseApiHost = function(url) {
