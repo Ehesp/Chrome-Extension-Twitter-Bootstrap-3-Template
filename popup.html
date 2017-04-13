@@ -42,11 +42,11 @@
     </div>
 
     <div class="main-content hidden">
-
+      <a href="#"></a> <!-- let chrome focus on this instead of first button. Kludge. See http://stackoverflow.com/a/39562615/222602 -->
       <div class="panel panel-default sm-panel">
         <div class="panel-body">
           <div class="btn-group">
-            <button type="button" class="btn btn-info dropdown-toggle client-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn btn-primary dropdown-toggle client-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="name"></span>
               <b class="caret"></b>
             </button>
@@ -54,7 +54,7 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button type="button" class="btn btn-info dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn btn-primary dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Select stories
               <b class="caret"></b>
               </button>
@@ -88,8 +88,13 @@
 
         <div class="metadata">
           <div class="row">
-            <div class="col-xs-2"><strong>URL</strong></div>
-            <div class="col-xs-10 url text-field loading"></div>
+            <div class="col-xs-2"><strong>Source</strong></div>
+            <div class="col-xs-10 source loading"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-2"><strong>Published</strong></div>
+            <div class="col-xs-10 pubdate loading"></div>
           </div>
 
           <div class="row">
@@ -98,18 +103,24 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-2"><strong>Source</strong></div>
-            <div class="col-xs-4 source loading"></div>
-            <div class="col-xs-3"><strong>Published</strong></div>
-            <div class="col-xs-3 pubdate loading"></div>
+            <div class="col-xs-2"><strong>URL</strong></div>
+            <div class="col-xs-10 url text-field loading"></div>
           </div>
+
         </div>
 
         <div class="metadata-editable hidden form-inline">
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>URL</label></div>
-              <div class="col-xs-10 text-field loading"><textarea class="form-control" rows="2" id="url"></textarea></div>
+              <div class="col-xs-2"><label>Source</label></div>
+              <div class="col-xs-10 source loading"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2"><label>Published</label></div>
+              <div class="col-xs-10 pubdate loading"><input class="form-control" id="pubdate"></div>
             </div>
           </div>
 
@@ -122,12 +133,11 @@
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>Source</label></div>
-              <div class="col-xs-4 source loading"></div>
-              <div class="col-xs-3"><label>Published</label></div>
-              <div class="col-xs-3 pubdate loading"><input class="form-control" id="pubdate"></div>
+              <div class="col-xs-2"><label>URL</label></div>
+              <div class="col-xs-10 text-field url loading"></div>
             </div>
           </div>
+
         </div>
 
         <div class="panel panel-default stats-panel">
@@ -141,6 +151,7 @@
                     <th class="text-center"><i class="fa fa-lg fa-google-plus-square"></i></th>
                     <th class="text-center"><i class="fa fa-lg fa-linkedin-square"></i></th>
                     <th class="text-center"><i class="fa fa-lg fa-pinterest-square"></i></th>
+                    <th class="text-center">Total</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -150,6 +161,7 @@
                     <td class="text-center google loading"></td>
                     <td class="text-center linkedin loading"></td>
                     <td class="text-center pinterest loading"></td>
+                    <td class="text-center total loading"></td>
                   </tr>
                 </tbody>
               </table>
@@ -197,8 +209,8 @@
         <div class="panel-body"> -->
       <div class="row bottom-row">
         <div class="col-xs-12">
-          <button type="button" class="btn btn-sm btn-info add-to-story disabled">Add to stories</button>
-          <button type="button" class="btn btn-sm btn-info go-to-story hidden">Go to story</button>
+          <button type="button" disabled class="btn btn-sm btn-primary add-to-story">Add to stories</button>
+          <button type="button" class="btn btn-sm btn-primary go-to-story hidden">Go to story</button>
         </div>
       </div>
 <!--         </div>

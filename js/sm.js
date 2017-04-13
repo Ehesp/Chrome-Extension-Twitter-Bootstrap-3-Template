@@ -132,7 +132,7 @@ $( document ).ready(function() {
     $('.add-to-story').text("")
     $('.add-to-story').addClass("loading")
     if (metadata_result.editable==true) {
-      metadata_result.canonical_url = $('.metadata-editable #url').val();
+      // metadata_result.canonical_url = $('.metadata-editable #url').val();
       metadata_result.title = $('.metadata-editable #title').val();
       metadata_result.published_at = $('.metadata-editable #pubdate').val();
       var summary = $('#summary').val();
@@ -153,7 +153,7 @@ $( document ).ready(function() {
         author: author,
       })
       .done(function(data) {
-        $('.add-to-story').addClass('disabled')
+        $('.add-to-story').prop('disabled', true)
         $('.add-to-story').removeClass('loading')
         $('.add-to-story').html($('<i class="fa fa-check"></i><span>Done</span>'))
       })
@@ -170,8 +170,9 @@ var show_main = function() {
   $('.main-content').removeClass('hidden').addClass('show');
   $('#status').empty();
   // TODO This doesn't seem to remove focus from that first button
-  $('button.client-dropdown').blur();
+  // console.log($('button.client-dropdown'));
   populate_dropdowns();
+  $('button.client-dropdown').blur();
   if (!user_menu_set) {
     user_menu_set = true;
     $('.fullname').text(fullname);
@@ -250,6 +251,7 @@ var load_url_and_metadata = function() {
           $('.metadata .pubdate').text(data.result.published_at_formatted)
         }
         $('.metadata .loading, .metadata-editable .loading').removeClass('loading')
+        $('.metadata .url, .metadata-editable .url').text(data.result.canonical_url)
         current_url = data.result.canonical_url
         load_source(data.result.canonical_url);
         request_uuid = generateUUID();
@@ -301,6 +303,7 @@ var load_stats = function() {
         $('.stats .google').text(data.google_share_formatted)
         $('.stats .linkedin').text(data.linkedin_formatted)
         $('.stats .pinterest').text(data.pinterest_formatted)
+        $('.stats .total').text(data.total_formatted)
       }
     })
   .fail(function(jqHxr, textStatus) {
@@ -321,14 +324,14 @@ var remove_story = function(elt) {
 
 var update_add_to_story_button = function() {
   if (selected_stories.length==0) {
-    $('.add-to-story').addClass('disabled')
+    $('.add-to-story').prop('disabled', true)
     $('.add-to-story').text("Add to stories")
   } else if (selected_stories.length==1) {
-    $('.add-to-story').removeClass('disabled')
+    $('.add-to-story').prop('disabled', false)
     $('.add-to-story').text("Add to story")
   } else {
     $('.add-to-story').text("Add to stories")
-    $('.add-to-story').removeClass('disabled')
+    $('.add-to-story').prop('disabled', false)
   }
 }
 
