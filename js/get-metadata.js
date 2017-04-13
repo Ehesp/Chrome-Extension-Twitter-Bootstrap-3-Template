@@ -12,7 +12,9 @@ var getValue = function(s) {
 }
 
 var m = {"description": [{query: "meta[property='og:description']", function: "content"}],
-  "author": [{query: "meta[property='article:author']", function: "content"},
+  "author": [
+  {query: "meta[property='article:author']", function: "content"},
+  {query: "meta[property='author']", function: "content"},
   {query: "meta[property='og:article:author']", function: "content"},
   {query: "a[rel='author']", function: "text"}
   ]
