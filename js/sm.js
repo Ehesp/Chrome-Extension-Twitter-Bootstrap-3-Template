@@ -21,8 +21,8 @@ $( document ).ready(function() {
     if (_.isEmpty(data.sm_info)) {
       console.log("sm_info is empty");
       chrome.tabs.query({'url': [
-        // 'http://*.shareablemetrics.com/*',
-        // 'https://*.shareablemetrics.com/*',
+        'http://*.shareablemetrics.com/*',
+        'https://*.shareablemetrics.com/*',
         'http://plumeapp-staging.herokuapp.com/*',
         'https://plumeapp-staging.herokuapp.com/*',
         'http://localhost/*',
