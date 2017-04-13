@@ -267,10 +267,14 @@ var load_url_and_metadata = function() {
       var authors = metadata.author.map(function(m) {
         return m[0]
       })
-      $('#author').val(_.first(_.reject(authors, _.isNil)));
+      $('#author').val(_.first(_.filter(authors, valid_author)));
     });
   });
 
+}
+
+var valid_author = function(a) {
+  return !(_.isNil(a) || validate({website: a}, {website: {url: true}})==undefined);
 }
 
 var load_source = function(url) {

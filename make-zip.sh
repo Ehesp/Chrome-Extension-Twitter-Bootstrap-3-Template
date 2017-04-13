@@ -1,2 +1,2 @@
 rm sm-chrome-extension.zip
-zip -x */.DS_Store -r sm-chrome-extension.zip manifest.json css fonts img js popup.html
+zip -x */.DS_Store -r sm-chrome-extension.zip manifest.json css fonts img js popup.html vendor/assets/validate/validate.min.js
