@@ -210,7 +210,7 @@
         <div class="panel-body"> -->
       <div class="row bottom-row">
         <div class="col-xs-12">
-          <button type="button" disabled class="btn btn-sm btn-primary add-to-story">Add to stories</button>
+          <button type="button" disabled class="btn btn-sm btn-primary add-to-story" data-target="#add-confirm" data-toggle="modal">Add to stories</button>
           <button type="button" class="btn btn-sm btn-primary go-to-story hidden">Go to story</button>
         </div>
       </div>
@@ -218,6 +218,30 @@
       </div> -->
 
     </div>
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="add-confirm">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p>Add article to <span class="client-name"></span></p>
+            <table class="table table-condensed table-bordered">
+              <thead>
+                <tr>
+                  <th>To Stories</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-sm btn-primary add-article">Add</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
   </body>
 </html>

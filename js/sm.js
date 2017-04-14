@@ -5,7 +5,8 @@ var email = '';
 var api_host = '';
 var app_host = '';
 var host_only = '';
-var selected_client_id = '';
+var sm_selected_client_id = '';
+var sm_clients = {};
 var current_url = '';
 var selected_story_ids = [];
 var metadata_result = {};
@@ -103,12 +104,12 @@ $( document ).ready(function() {
 
   $('.client-list').on('click', function(e) {
     $t = $(e.target)
-    selected_client_id = $t.data('id')
-    chrome.storage.local.set({sm_selected_client_id: selected_client_id}, function() {
+    sm_selected_client_id = $t.data('id')
+    chrome.storage.local.set({sm_selected_client_id: sm_selected_client_id}, function() {
     });
     $('.client-dropdown .name').text($t.text())
     $('.story-list li').addClass('hidden');
-    $('.story-list li.client-' + selected_client_id).removeClass('hidden');
+    $('.story-list li.client-' + sm_selected_client_id).removeClass('hidden');
     selected_stories = []
     update_add_to_story_button()
     $('.story-badge').remove()
@@ -128,7 +129,8 @@ $( document ).ready(function() {
     return false;
   })
 
-  $('.add-to-story').on('click', function(e) {
+  $('#add-confirm .add-article').on('click', function(e) {
+    $('#add-confirm').modal('hide')
     $('.add-to-story').text("")
     $('.add-to-story').addClass("loading")
     if (metadata_result.editable==true) {
@@ -143,7 +145,7 @@ $( document ).ready(function() {
     $.post(api_host + "add_article",
       {
         story_ids: selected_stories,
-        client_id: selected_client_id,
+        client_id: sm_selected_client_id,
         metadata: metadata_result,
         source: source_result,
         stats: stats_result,
@@ -161,6 +163,14 @@ $( document ).ready(function() {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
       });
     });
+
+  $('#add-confirm').on('show.bs.modal', function(e) {
+    var m = $('#add-confirm')
+    var client = _.find(sm_clients, function(c) {return c.id==sm_selected_client_id});
+    m.find('.client-name').text(client.name);
+    var stories = _.filter(client.stories, function(s) {return _.includes(selected_stories, s.id)});
+    m.find('tbody').html($(_.map(stories, function(s) { return '<tr><td>' + s.name + '</td></tr>'}).join('')))
+  });
 
 });
 
@@ -195,6 +205,7 @@ var populate_dropdowns = function() {
   $.get(api_host + "clients_and_stories")
     .done(function(data) {
       console.log("clients_and_stories returned", data);
+      sm_clients = data.clients;
       var r = data.clients.map(function(client) {
         return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
       })
@@ -293,7 +304,7 @@ var load_stats = function() {
   $.post(api_host + "get_article_stats",
       {
         url: current_url,
-        client_id: selected_client_id,
+        client_id: sm_selected_client_id,
         request_id: request_uuid
       })
     .done(function(data, textStatus, xhr) {
