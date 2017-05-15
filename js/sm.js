@@ -115,20 +115,6 @@ $( document ).ready(function() {
     $('.story-badge').remove()
   })
 
-  $('.story-list').on('click', function(e) {
-    $t = $(e.target)
-    var elt = $('<span class="label label-default story-badge story-badge-' + $t.data('id') + '">' + $t.text() + '<span class="story-remove" aria-hidden="true">&times;</span></span>')
-    elt.data('story-id', $t.data('id'))
-    $('.stories').append(elt)
-    elt.find('.story-remove').on('click', function() {
-      remove_story(elt)
-    })
-    selected_stories.push($t.data('id'))
-    update_add_to_story_button()
-    $t.addClass('hidden')
-    return false;
-  })
-
   $('#add-confirm .add-article').on('click', function(e) {
     $('#add-confirm').modal('hide')
     $('.add-to-story').text("")
@@ -201,6 +187,22 @@ var set_api_token = function(token) {
   });
 }
 
+var set_story_list_handler = function() {
+  $('.story-list a').on('click', function(e) {
+    $t = $(e.target)
+    var elt = $('<span class="label label-default story-badge story-badge-' + $t.data('id') + '">' + $t.text() + '<span class="story-remove" aria-hidden="true">&times;</span></span>')
+    elt.data('story-id', $t.data('id'))
+    $('.stories').append(elt)
+    elt.find('.story-remove').on('click', function() {
+      remove_story(elt)
+    })
+    selected_stories.push($t.data('id'))
+    update_add_to_story_button()
+    $t.addClass('hidden')
+    return false;
+  });
+}
+
 var populate_dropdowns = function() {
   $.get(api_host + "clients_and_stories")
     .done(function(data) {
@@ -216,6 +218,7 @@ var populate_dropdowns = function() {
         })
       })
       $('.story-list').html(_.flatten(r));
+      set_story_list_handler();
       chrome.storage.local.get({sm_selected_client_id: ''}, function(localdata) {
         if (localdata.sm_selected_client_id=='') {
           sm_selected_client_id = data.default_client_id;
