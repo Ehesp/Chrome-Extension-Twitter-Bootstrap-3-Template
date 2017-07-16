@@ -260,6 +260,9 @@ var load_url_and_metadata = function() {
             }
           );
         } else {
+          if (data.result.in_client) {
+            $('.metadata .url-icon').removeClass('hidden');
+          }
           $('.metadata .url').text(data.result.canonical_url)
           $('.metadata .title').text(data.result.title)
           $('.metadata .pubdate').text(data.result.published_at_formatted)
