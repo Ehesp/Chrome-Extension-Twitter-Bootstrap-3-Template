@@ -5,7 +5,13 @@ Chrome extension for interacting with Shareablemetrics.
 1. Make sure any of your development edits to files, manifest.json, etc, are backed out (eventually need a way to handle this better)
 1.Make sure you have updated the `version` numberin manifest.json to a new value (and to be clear: leave `manifest_version` unchanged).
 1. run `make-zip.sh` which will create `sm-chrome-extension.zip`
-1. Published `sm-chrome-extension.zip` via the Chrome Developer UI.
+1. Publish `sm-chrome-extension.zip` via the Chrome Developer UI (log in as `support@shareablemetrics.com`)
+
+# To adapt for running locally
+
+1. Compare `manifest.json` and `manifest.json.dev` and update `manifest.json.dev` as appropriate (probably just version number)
+1. Copy `manifest.json` to `manifest.json.prod`
+1. Copy `manifest.json.dev` to `manifest.json`
 
 # Boilerplate Content Follows, eventually can delete.
 
