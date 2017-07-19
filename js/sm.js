@@ -252,13 +252,7 @@ var load_url_and_metadata = function() {
           $('.metadata-editable').removeClass('hidden')
           $('.metadata-editable #url').val(data.result.canonical_url)
           $('.metadata-editable #title').val(data.result.title)
-          $('.metadata-editable #pubdate').daterangepicker(
-            { "singleDatePicker": true,
-              "showDropdowns": true,
-              "alwaysShowCalendars": true,
-              "startDate": moment(data.result.published_at)
-            }
-          );
+          setup_editable_published_at(data);
         } else {
           if (data.result.in_client) {
             $('.metadata .url-icon').removeClass('hidden');
@@ -288,6 +282,33 @@ var load_url_and_metadata = function() {
     });
   });
 
+}
+
+var setup_editable_published_at = function(data) {
+  if (data.result.published_at) {
+    $('.metadata-editable #pubdate').daterangepicker(
+      { "singleDatePicker": true,
+        "showDropdowns": true,
+        "alwaysShowCalendars": true,
+        "startDate": moment(data.result.published_at)
+      }
+    )
+  } else {
+    $('.metadata-editable #pubdate').daterangepicker(
+      { "singleDatePicker": true,
+        "showDropdowns": true,
+        "alwaysShowCalendars": true,
+        "autoUpdateInput": false
+      }
+    )
+    $('.metadata-editable #pubdate').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('MM/DD/YYYY'));
+    });
+
+    $('.metadata-editable #pubdate').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+  }
 }
 
 var valid_author = function(a) {
