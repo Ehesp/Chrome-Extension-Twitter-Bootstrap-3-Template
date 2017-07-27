@@ -127,6 +127,8 @@ $( document ).ready(function() {
       var notes = $('#notes').val();
       var tone = $('#tone').val();
       var author = $('#author').val();
+      var focus = $('#focus').val();
+      var article_type = $('#article_type').val();
     }
     $.post(api_host + "add_article",
       {
@@ -139,6 +141,8 @@ $( document ).ready(function() {
         notes: notes,
         tone: tone,
         author: author,
+        focus: focus,
+        article_type: article_type,
       })
       .done(function(data) {
         $('.add-to-story').prop('disabled', true)
