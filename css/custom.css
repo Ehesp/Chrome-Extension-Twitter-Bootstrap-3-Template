@@ -11,57 +11,48 @@ body, section {			/* Change width and height to own preferences */
 }
 
 body.short {
-  height: 340px;
+  height: 300px;
 }
 
 body.tall {
-  height: 600px;
+  height: 530px;
 }
 
 /* Basic style tweaks */
 section { padding: 5px;}
-.navbar { margin-bottom: 1rem; }
 
 /* Scroll Bar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
 ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:window-inactive  { background: red; }
 
-.row {
-  margin-bottom: 1rem;
+.row, .navbar {
+  margin-bottom: 5px;
 }
 
-.navbar-brand {
-  padding: 0 15px;
+.navbar {
+  min-height: 0;
 }
 
-.navbar-brand img {
-  height: 48px;
+.navbar .container-fluid {
+  padding-left: 0;
+  padding-right: 15px;
 }
 
-#urls {
-  border: 1px solid #ddd;
-  height: 20rem;
+.nav-icon {
+  padding-right: 0.5rem;
 }
 
-.sm-panel {
-  margin-bottom: 3px;
+.navbar-nav li a {
+  padding: 10px 15px;
 }
 
-.sm-panel .panel-body, .stats-panel .panel-body {
-  padding: 3px;
+.ellipsis {
+  cursor: pointer;
 }
 
-.bottom-panel {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-.bottom-row {
-  position: fixed;
-  bottom: 0;
-  margin-bottom: 3px;
+.tooltip-inner {
+  white-space: nowrap;
 }
 
 .stats th {
@@ -72,17 +63,14 @@ section { padding: 5px;}
   margin-bottom: 0;
 }
 
-.add-to-story {
-  min-width: 4rem;
-}
-
-.add-to-story i {
-  margin-right: 0.5rem;
+span.stories {
+  padding-top: 4px !important;
 }
 
 .stories .label {
   margin-right: 3px;
 }
+
 .stories .label-default {
   background-color: #ccc;
   color: #000;
@@ -90,18 +78,11 @@ section { padding: 5px;}
   font-size: 12px;
   font-weight: normal;
   margin-bottom: 3px;
+  padding: 3px 4px;
 }
 .stories  .story-remove {
   cursor: pointer;
   margin-left: 3px;
-}
-
-.stories-panel {
-  min-height: 26px;
-}
-
-.stories-panel .panel-body {
-  padding-bottom: 0;
 }
 
 .text-field {

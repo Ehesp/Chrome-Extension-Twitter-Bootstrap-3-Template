@@ -44,44 +44,61 @@
 
     <div class="main-content hidden">
       <a href="#"></a> <!-- let chrome focus on this instead of first button. Kludge. See http://stackoverflow.com/a/39562615/222602 -->
-      <div class="panel panel-default sm-panel">
-        <div class="panel-body">
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle client-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="name"></span>
-              <b class="caret"></b>
-            </button>
-            <ul class="dropdown-menu client-list">
-            </ul>
-          </div>
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Select stories
-              <b class="caret"></b>
-              </button>
-            <ul class="dropdown-menu story-list">
-            </ul>
-          </div>
-          <div class="btn-group pull-right">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-user-circle-o"></i><span class="fullname"></span><b class="caret"></b>
-            </button>
-            <ul class="dropdown-menu settings-menu">
-              <li>
-                <a href="#" id="logout">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
 
-      <div class="panel panel-default sm-panel stories-panel">
-        <div class="panel-body">
-          <div class="stories"></div>
-        </div>
-      </div>
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav">
+            <li>
+              <a id="stories-link" href="#" target="_blank">
+                <i class="fa fa-book nav-icon"></i>STORIES</a>
+            </li>
+            <li>
+              <a id="articles-link" href="#" target="_blank">
+                <i class="fa fa-files-o nav-icon"></i>ARTICLES</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle client-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-building nav-icon"></i><span class="name"></span><span class="caret"></span></a>
+              <ul class="dropdown-menu client-list">
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-circle-o nav-icon"></i><span class="initials"></span><span class="caret"></span></a>
+              <ul class="dropdown-menu settings-menu">
+                <li>
+                  <a href="#" id="logout">Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.container-fluid -->
+      </nav>
 
       <div class="container-fluid">
+
+        <div class="row" style="padding-bottom: 5px; margin-bottom: 0; border-bottom: 1px solid #ddd;">
+          <div class="col-xs-10">
+            <div class="input-group input-group-sm stories-input-group">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-primary dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select
+                  <b class="caret"></b>
+                  </button>
+                  <ul class="dropdown-menu story-list">
+                  </ul>
+              </span>
+              <span class="form-control stories" style="overflow: hidden;"></span>
+              <!-- <span class="input-group-addon ellipsis">&ellip;</span> -->
+            </div>
+          </div>
+          <div class="col-xs-2">
+            <button class="btn btn-primary btn-sm add-to-story" type="button" data-target="#add-confirm" data-toggle="modal">Add</button>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-xs-12 status">
           </div>
@@ -179,14 +196,14 @@
           <div class="row">
             <div class="form-group">
               <div class="col-xs-2"><strong>Summary</strong></div>
-              <div class="col-xs-10"><textarea class="form-control" rows="3" id="summary"></textarea></div>
+              <div class="col-xs-10"><textarea class="form-control" rows="2" id="summary"></textarea></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
               <div class="col-xs-2"><strong>Notes</strong></div>
-              <div class="col-xs-10"><textarea class="form-control" rows="3" id="notes"></textarea></div>
+              <div class="col-xs-10"><textarea class="form-control" rows="2" id="notes"></textarea></div>
             </div>
           </div>
 
@@ -208,7 +225,7 @@
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>Article Type</label></div>
+              <div class="col-xs-2" style="padding-right: 0;"><label>Article Type</label></div>
               <div class="col-xs-4">
                 <select class="form-control" id="article_type">
                   <option>Select...</option>
@@ -224,14 +241,6 @@
         </div>
 
 
-      </div>
-
-      <div class="row bottom-row">
-        <div class="col-xs-12">
-          <button type="button" class="hidden btn btn-sm btn-primary add-to-story" data-target="#add-confirm" data-toggle="modal">Add to stories</button>
-          <button type="button" class="btn btn-sm btn-primary add-to-client" data-target="#add-confirm" data-toggle="modal">Add to client</button>
-          <button type="button" class="btn btn-sm btn-primary go-to-story hidden">Go to story</button>
-        </div>
       </div>
 
     </div>

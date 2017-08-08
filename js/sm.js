@@ -13,14 +13,26 @@ var metadata_result = {};
 var source_result = {};
 var stats_result = {};
 var user_menu_set = false;
+var current_extension_version = chrome.runtime.getManifest().version;
+
+var versionChanged = function(sm_info) {
+  if (sm_info.extension_version != current_extension_version) {
+    console.log("Version has changed.");
+    return true;
+  } else {
+    console.log("Version has not changed.");
+    return false;
+  }
+};
 
 $( document ).ready(function() {
   $('#status').append($('<div>Checking access...</div>'));
 
   chrome.storage.local.get({sm_info: {}}, function(data) {
     console.log("inside the fn for the get, ", data);
-    if (_.isEmpty(data.sm_info)) {
-      console.log("sm_info is empty");
+
+    if (_.isEmpty(data.sm_info) || versionChanged(data.sm_info)) {
+      console.log("sm_info is empty or version is different");
       chrome.tabs.query({'url': [
         'http://*.shareablemetrics.com/*',
         'https://*.shareablemetrics.com/*',
@@ -39,13 +51,14 @@ $( document ).ready(function() {
             if (r.length > 0 && r[0] != null && r[0]['sm-api-token'] != null) {
               var token = r[0]['sm-api-token'];
               fullname = r[0]['fullname'];
+              initials = r[0]['initials'];
               email = r[0]['sm-email'];
               set_api_token(token)
               api_host = parseApiHost(t.url)
               app_host = parseAppHost(t.url)
               host_only = parseHostOnly(t.url)
               var sm_info = {sm_api_token: token, sm_api_host: api_host, sm_app_host: app_host, sm_host_only: host_only,
-                fullname: fullname, email: email};
+                fullname: fullname, initials: initials, email: email, extension_version: current_extension_version};
               chrome.storage.local.set({sm_info: sm_info}, function() {
                 console.log("Have set sm_info", sm_info);
                 show_main();
@@ -74,6 +87,7 @@ $( document ).ready(function() {
       app_host = data.sm_info.sm_app_host;
       host_only = data.sm_info.sm_host_only;
       fullname = data.sm_info.fullname;
+      initials = data.sm_info.initials;
       email = data.sm_info.email;
       $('#status').append($('<div>Have access token, proceeding...</div>'));
       show_main();
@@ -111,14 +125,16 @@ $( document ).ready(function() {
     $('.story-list li').addClass('hidden');
     $('.story-list li.client-' + sm_selected_client_id).removeClass('hidden');
     selected_stories = []
-    update_add_to_story_button()
+    // update_add_to_story_button()
     $('.story-badge').remove()
+    check_overflow();
+    $('#stories-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/stories');
+    $('#articles-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/articles');
   })
 
   $('#add-confirm .add-article').on('click', function(e) {
     $('#add-confirm').modal('hide')
     $('.add-to-story').text("").addClass("loading")
-    $('.add-to-client').text("").addClass("loading")
     if (metadata_result.editable==true) {
       // metadata_result.canonical_url = $('.metadata-editable #url').val();
       metadata_result.title = $('.metadata-editable #title').val();
@@ -147,8 +163,9 @@ $( document ).ready(function() {
       .done(function(data) {
         $('.add-to-story').removeClass('loading')
         $('.add-to-story').html($('<i class="fa fa-check"></i><span>Done</span>'))
-        $('.add-to-client').removeClass('loading')
-        $('.add-to-client').html($('<i class="fa fa-check"></i><span>Done</span>'))
+        setTimeout(function() {
+          $('.add-to-story').text('Add');
+        }, 3000);
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
@@ -181,7 +198,7 @@ var show_main = function() {
   $('button.client-dropdown').blur();
   if (!user_menu_set) {
     user_menu_set = true;
-    $('.fullname').text(fullname);
+    $('.initials').text(initials);
     $('.settings-menu').append($('<li role="separator" class="divider"></li>'))
     $('.settings-menu').append($('<li><div>' + email + '</div></li>'))
     if (!host_only.includes("shareablemetrics.com")) {
@@ -200,17 +217,38 @@ var set_api_token = function(token) {
 var set_story_list_handler = function() {
   $('.story-list a').on('click', function(e) {
     $t = $(e.target)
-    var elt = $('<span class="label label-default story-badge story-badge-' + $t.data('id') + '">' + $t.text() + '<span class="story-remove" aria-hidden="true">&times;</span></span>')
+    var elt = $('<span class="label label-default story-badge story-badge-' + $t.data('id') +
+      '"><span class="story-badge-text">' + $t.text() + '</span><span class="story-remove" aria-hidden="true">&times;</span></span>')
     elt.data('story-id', $t.data('id'))
     $('.stories').append(elt)
     elt.find('.story-remove').on('click', function() {
       remove_story(elt)
     })
     selected_stories.push($t.data('id'))
-    update_add_to_story_button()
+    // update_add_to_story_button()
     $t.addClass('hidden')
-    return false;
+    check_overflow();
   });
+}
+
+var check_overflow = function() {
+  var has_overflow = _.some($('.story-badge'), function(s) {
+    return $(s).position().top >= $('.stories').height();
+  });
+  if (has_overflow) {
+    $('.ellipsis').remove()
+    var story_names = _.map($('.story-badge-text'), function(s) {
+      console.log(s);
+      return $(s).text()
+    });
+    console.log(story_names);
+    $('.stories-input-group').append(
+      $('<span class="input-group-addon ellipsis" data-toggle="tooltip" data-placement="bottom" data-html="true" title="' +
+        story_names.join("<br>") + '">&hellip;</span>'));
+    $('.ellipsis').tooltip();
+  } else {
+    $('.ellipsis').remove()
+  }
 }
 
 var populate_dropdowns = function() {
@@ -370,25 +408,23 @@ var remove_story = function(elt) {
   selected_stories = selected_stories.filter(function(array_id) {
     return array_id != story_id;
   })
-  update_add_to_story_button()
+  // update_add_to_story_button()
   $('.story-list-item-'+ story_id).removeClass('hidden')
+  check_overflow();
 }
 
-var update_add_to_story_button = function() {
-  if (selected_stories.length==0) {
-    $('.add-to-story').text("Add to stories")
-    $('.add-to-story').addClass("hidden")
-    $('.add-to-client').removeClass("hidden")
-  } else if (selected_stories.length==1) {
-    $('.add-to-story').text("Add to story")
-    $('.add-to-story').removeClass("hidden")
-    $('.add-to-client').addClass("hidden")
-  } else {
-    $('.add-to-story').text("Add to stories")
-    $('.add-to-story').removeClass("hidden")
-    $('.add-to-client').addClass("hidden")
-  }
-}
+// var update_add_to_story_button = function() {
+//   if (selected_stories.length==0) {
+//     $('.add-to-story').text("Add to stories")
+//     $('.add-to-story').addClass("hidden")
+//   } else if (selected_stories.length==1) {
+//     $('.add-to-story').text("Add to story")
+//     $('.add-to-story').removeClass("hidden")
+//   } else {
+//     $('.add-to-story').text("Add to stories")
+//     $('.add-to-story').removeClass("hidden")
+//   }
+// }
 
 var generateUUID = function() {
   var d, uuid;
