@@ -226,16 +226,13 @@
 
       </div>
 
-<!--       <div class="panel panel-default sm-panel bottom-panel">
-        <div class="panel-body"> -->
       <div class="row bottom-row">
         <div class="col-xs-12">
-          <button type="button" disabled class="btn btn-sm btn-primary add-to-story" data-target="#add-confirm" data-toggle="modal">Add to stories</button>
+          <button type="button" class="hidden btn btn-sm btn-primary add-to-story" data-target="#add-confirm" data-toggle="modal">Add to stories</button>
+          <button type="button" class="btn btn-sm btn-primary add-to-client" data-target="#add-confirm" data-toggle="modal">Add to client</button>
           <button type="button" class="btn btn-sm btn-primary go-to-story hidden">Go to story</button>
         </div>
       </div>
-<!--         </div>
-      </div> -->
 
     </div>
 
@@ -245,7 +242,7 @@
         <div class="modal-content">
           <div class="modal-body">
             <p>Add article to <span class="client-name"></span></p>
-            <table class="table table-condensed table-bordered">
+            <table class="table table-condensed table-bordered story-table">
               <thead>
                 <tr>
                   <th>To Stories</th>

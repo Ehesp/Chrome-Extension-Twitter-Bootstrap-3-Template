@@ -117,8 +117,8 @@ $( document ).ready(function() {
 
   $('#add-confirm .add-article').on('click', function(e) {
     $('#add-confirm').modal('hide')
-    $('.add-to-story').text("")
-    $('.add-to-story').addClass("loading")
+    $('.add-to-story').text("").addClass("loading")
+    $('.add-to-client').text("").addClass("loading")
     if (metadata_result.editable==true) {
       // metadata_result.canonical_url = $('.metadata-editable #url').val();
       metadata_result.title = $('.metadata-editable #title').val();
@@ -145,9 +145,10 @@ $( document ).ready(function() {
         article_type: article_type,
       })
       .done(function(data) {
-        $('.add-to-story').prop('disabled', true)
         $('.add-to-story').removeClass('loading')
         $('.add-to-story').html($('<i class="fa fa-check"></i><span>Done</span>'))
+        $('.add-to-client').removeClass('loading')
+        $('.add-to-client').html($('<i class="fa fa-check"></i><span>Done</span>'))
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
@@ -159,7 +160,12 @@ $( document ).ready(function() {
     var client = _.find(sm_clients, function(c) {return c.id==sm_selected_client_id});
     m.find('.client-name').text(client.name);
     var stories = _.filter(client.stories, function(s) {return _.includes(selected_stories, s.id)});
-    m.find('tbody').html($(_.map(stories, function(s) { return '<tr><td>' + s.name + '</td></tr>'}).join('')))
+    if (stories.length==0){
+      m.find('.story-table').addClass('hidden')
+    } else {
+      m.find('.story-table').removeClass('hidden')
+      m.find('tbody').html($(_.map(stories, function(s) { return '<tr><td>' + s.name + '</td></tr>'}).join('')))
+    }
   });
 
 });
@@ -370,14 +376,17 @@ var remove_story = function(elt) {
 
 var update_add_to_story_button = function() {
   if (selected_stories.length==0) {
-    $('.add-to-story').prop('disabled', true)
     $('.add-to-story').text("Add to stories")
+    $('.add-to-story').addClass("hidden")
+    $('.add-to-client').removeClass("hidden")
   } else if (selected_stories.length==1) {
-    $('.add-to-story').prop('disabled', false)
     $('.add-to-story').text("Add to story")
+    $('.add-to-story').removeClass("hidden")
+    $('.add-to-client').addClass("hidden")
   } else {
     $('.add-to-story').text("Add to stories")
-    $('.add-to-story').prop('disabled', false)
+    $('.add-to-story').removeClass("hidden")
+    $('.add-to-client').addClass("hidden")
   }
 }
 
