@@ -163,7 +163,7 @@
     "@navbar-default-toggle-icon-bar-bg": "#888",
     "@navbar-default-toggle-border-color": "#ddd",
     "@navbar-inverse-color": "#fff",
-    "@navbar-inverse-bg": "#222",
+    "@navbar-inverse-bg": "#444444",
     "@navbar-inverse-border": "darken(@navbar-inverse-bg, 10%)",
     "@navbar-inverse-link-color": "#fff",
     "@navbar-inverse-link-hover-color": "#ef7d69",
@@ -304,8 +304,8 @@
     "@list-group-link-hover-color": "@list-group-link-color",
     "@list-group-link-heading-color": "#333",
     "@panel-bg": "#fff",
-    "@panel-body-padding": "15px",
-    "@panel-heading-padding": "10px 15px",
+    "@panel-body-padding": "3px",
+    "@panel-heading-padding": "3px 3px",
     "@panel-footer-padding": "@panel-heading-padding",
     "@panel-border-radius": "@border-radius-base",
     "@panel-inner-border": "#ddd",
@@ -414,5 +414,5 @@
     "popover.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=160e64d3ee6cfacc4bea8bb387e4fb78"
+  "customizerUrl": "https://getbootstrap.com/customize/?id=6fc7eb1e891eb0a1fcbb1d01f1260dc5"
 }

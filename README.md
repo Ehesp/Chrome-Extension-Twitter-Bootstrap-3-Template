@@ -13,6 +13,12 @@ Chrome extension for interacting with Shareablemetrics.
 1. Copy `manifest.json` to `manifest.json.prod`
 1. Copy `manifest.json.dev` to `manifest.json`
 
+# Design notes
+
+A lot of the modifications to Bootstrap is done by customizing the base bootstrap files via https://getbootstrap.com/customize.
+
+Upload the config.json file to get the current configuration, modify it as needed, download and copy the files into the project repo.
+
 # Boilerplate Content Follows, eventually can delete.
 
 # Chrome Extension Twitter Bootstrap 3 Template
