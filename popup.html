@@ -47,7 +47,12 @@
 
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
-          <ul class="nav navbar-nav">
+          <div class="navbar-header">
+            <div class="navbar-brand">
+              <img alt="ShareableMetrics" src="img/sm-logo-for-header.png" height="20">
+            </div>
+          </div>
+          <ul class="nav navbar-nav sm-navbar-left">
             <li>
               <a id="stories-link" href="#" target="_blank">
                 <i class="fa fa-book nav-icon"></i>STORIES</a>
@@ -57,7 +62,7 @@
                 <i class="fa fa-files-o nav-icon"></i>ARTICLES</a>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right sm-navbar-right">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle client-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-building nav-icon"></i><span class="name"></span><span class="caret"></span></a>
@@ -79,9 +84,9 @@
 
       <div class="container-fluid">
 
-        <div class="row" style="padding-bottom: 5px; margin-bottom: 0; border-bottom: 1px solid #ddd;">
-          <div class="col-xs-10">
-            <div class="input-group input-group-sm stories-input-group">
+        <div class="row" style="padding-bottom: 5px; margin-bottom: 0;">
+          <div class="col-xs-12">
+            <span class="input-group input-group-sm stories-input-group pull-left" style="width: 418px;">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-primary dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Select
@@ -91,11 +96,8 @@
                   </ul>
               </span>
               <span class="form-control stories" style="overflow: hidden;"></span>
-              <!-- <span class="input-group-addon ellipsis">&ellip;</span> -->
-            </div>
-          </div>
-          <div class="col-xs-2">
-            <button class="btn btn-primary btn-sm add-to-story" type="button" data-target="#add-confirm" data-toggle="modal">Add</button>
+            </span>
+            <button class="btn btn-primary btn-sm add-to-story pull-right" type="button" data-target="#add-confirm" data-toggle="modal">Add</button>
           </div>
         </div>
 
