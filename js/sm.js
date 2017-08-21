@@ -322,7 +322,9 @@ var load_url_and_metadata = function() {
 
     chrome.tabs.executeScript(tabs[0].id, {'file': 'js/get-metadata.js'}, function(r) {
       var metadata = r[0];
-      $('#summary').val(metadata.description[0][0])
+      // This parses any HTML entities, etc.
+      var doc = new DOMParser().parseFromString(metadata.description[0][0], "text/html");
+      $('#summary').val(doc.documentElement.textContent)
       var authors = metadata.author.map(function(m) {
         return m[0]
       })
