@@ -24,7 +24,7 @@ section { padding: 5px;}
 /* Scroll Bar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
-::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:window-inactive  { background: red; }
+::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:window-inactive  { background: gray; }
 
 .row, .navbar {
   margin-bottom: 8px;
@@ -112,6 +112,12 @@ span.stories {
 .settings-menu div {
   white-space: nowrap;
   padding: 3px 20px;
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 450px;
+  overflow-x: hidden;
 }
 
 .fullname {

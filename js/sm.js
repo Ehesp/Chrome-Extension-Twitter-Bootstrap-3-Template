@@ -270,10 +270,19 @@ var populate_dropdowns = function() {
     .done(function(data) {
       console.log("clients_and_stories returned", data);
       sm_clients = data.clients;
+      var recent_clients = data.recent_clients.map(function(client) {
+        return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
+      })
+      console.log("recent_clients is", recent_clients);
+      if (recent_clients.length != 0) {
+        $('.client-list').html(recent_clients);
+        $('.client-list').append($('<li role="separator" class="divider"></li>'));
+      }
       var r = data.clients.map(function(client) {
         return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
       })
-      $('.client-list').html(r);
+      console.log("r is", r);
+      $('.client-list').append(r);
       var r = data.clients.map(function(client) {
         return client.stories.map(function(story) {
           return $('<li class="client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
