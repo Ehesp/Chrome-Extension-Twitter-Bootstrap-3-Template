@@ -26,6 +26,18 @@ var versionChanged = function(sm_info) {
 };
 
 $( document ).ready(function() {
+  // Set delay_launch to true to pause briefly before the extension starts running, for debugging
+  // I suppose you could break into the debugger instead
+  var delay_launch = false;
+  if (delay_launch) {
+    setTimeout(launch_extension, 1000);
+  } else {
+    launch_extension();
+  }
+});
+
+var launch_extension = function() {
+  console.log("Starting launch_extension");
   $('#status').append($('<div>Checking access...</div>'));
 
   chrome.storage.local.get({sm_info: {}}, function(data) {
@@ -130,15 +142,18 @@ $( document ).ready(function() {
     check_overflow();
     $('#stories-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/stories');
     $('#articles-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/articles');
+    load_url_and_metadata();
   })
 
   $('#add-confirm .add-article').on('click', function(e) {
     $('#add-confirm').modal('hide')
     $('.add-to-story').text("").addClass("loading")
-    if (metadata_result.editable==true) {
+    if (metadata_result.base_fields_editable==true) {
       // metadata_result.canonical_url = $('.metadata-editable #url').val();
       metadata_result.title = $('.metadata-editable #title').val();
       metadata_result.published_at = $('.metadata-editable #pubdate').val();
+    }
+    if (metadata_result.extended_fields_editable==true) {
       var summary = $('#summary').val();
       var notes = $('#notes').val();
       var tone = $('#tone').val();
@@ -184,8 +199,7 @@ $( document ).ready(function() {
       m.find('tbody').html($(_.map(stories, function(s) { return '<tr><td>' + s.name + '</td></tr>'}).join('')))
     }
   });
-
-});
+}
 
 var show_main = function() {
   logged_in = true;
@@ -286,6 +300,7 @@ var populate_dropdowns = function() {
 }
 
 var load_url_and_metadata = function() {
+  reset_fields();
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
     var url = tabs[0].url;
     $.post(api_host + "get_article_metadata",
@@ -293,9 +308,7 @@ var load_url_and_metadata = function() {
           client_id: sm_selected_client_id})
       .done(function(data) {
         metadata_result = data.result
-        if (data.result.editable==true) {
-          $('body').removeClass('short').addClass('tall')
-          $('.user').removeClass('hidden')
+        if (data.result.base_fields_editable==true) {
           $('.metadata').addClass('hidden')
           $('.metadata-editable').removeClass('hidden')
           $('.metadata-editable #url').val(data.result.canonical_url)
@@ -308,6 +321,19 @@ var load_url_and_metadata = function() {
           $('.metadata .url').text(data.result.canonical_url)
           $('.metadata .title').text(data.result.title)
           $('.metadata .pubdate').text(data.result.published_at_formatted)
+        }
+        if (data.result.extended_fields_editable==true) {
+          $('.user').addClass('hidden')
+          $('.user-editable').removeClass('hidden')
+        } else {
+          $('.user').removeClass('hidden')
+          $('.user-editable').addClass('hidden')
+          $('.user .summary').text(data.result.summary)
+          $('.user .notes').text(data.result.notes)
+          $('.user .tone').text(data.result.tone)
+          $('.user .author').text(data.result.author_name)
+          $('.user .article_type').text(data.result.article_type)
+          $('.user .focus').text(data.result.focus)
         }
         $('.metadata .loading, .metadata-editable .loading').removeClass('loading')
         $('.metadata .url, .metadata-editable .url').text(data.result.canonical_url)
@@ -413,6 +439,30 @@ var remove_story = function(elt) {
   // update_add_to_story_button()
   $('.story-list-item-'+ story_id).removeClass('hidden')
   check_overflow();
+}
+
+var reset_fields = function() {
+  $('.metadata-editable #url').val('')
+  $('.metadata-editable .url').val('')
+  $('.metadata-editable #title').val('')
+  $('.metadata .url-icon').addClass('hidden');
+  $('.metadata .url').text('')
+  $('.metadata .title').text('')
+  $('.metadata .pubdate').text('')
+  $('.user').addClass('hidden')
+  $('.user-editable').removeClass('hidden')
+  $('.user .summary').text('')
+  $('.user .notes').text('')
+  $('.user .tone').text('')
+  $('.user .author').text('')
+  $('.user .article_type').text('')
+  $('.user .focus').text('')
+  $('.stats .facebook').text('')
+  $('.stats .twitter').text('')
+  $('.stats .google').text('')
+  $('.stats .linkedin').text('')
+  $('.stats .pinterest').text('')
+  $('.stats .total').text('')
 }
 
 // var update_add_to_story_button = function() {

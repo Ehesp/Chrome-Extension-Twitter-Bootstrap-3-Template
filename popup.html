@@ -26,7 +26,7 @@
     <link href="css/daterangepicker.css" rel="stylesheet" media="screen">
   </head>
   
-  <body class="short">
+  <body class="tall">
   
     <div class="container-fluid show check-access">
       <div class="row">
@@ -86,7 +86,7 @@
 
         <div class="row" style="padding-bottom: 5px; margin-bottom: 0;">
           <div class="col-xs-12">
-            <span class="input-group input-group-sm stories-input-group pull-left" style="width: 418px;">
+            <span class="input-group input-group-sm stories-input-group pull-left">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-primary dropdown-toggle story-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Select
@@ -195,6 +195,41 @@
         </div>
 
         <div class="user hidden form-inline">
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2"><strong>Summary</strong></div>
+              <div class="col-xs-10 summary"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2"><strong>Notes</strong></div>
+              <div class="col-xs-10 notes"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2"><label>Tone</label></div>
+              <div class="col-xs-4 tone"></div>
+              <div class="col-xs-2"><label>Author</label></div>
+              <div class="col-xs-4 author"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-2" style="padding-right: 0;"><label>Article Type</label></div>
+              <div class="col-xs-4 article_type"></div>
+              <div class="col-xs-2"><label>Focus</label></div>
+              <div class="col-xs-4 focus"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="user-editable hidden form-inline">
           <div class="row">
             <div class="form-group">
               <div class="col-xs-2"><strong>Summary</strong></div>
