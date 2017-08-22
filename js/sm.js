@@ -283,12 +283,24 @@ var populate_dropdowns = function() {
       })
       console.log("r is", r);
       $('.client-list').append(r);
+      var recent_stories = data.clients.map(function(client) {
+        console.log("client is ", client);
+        var list_items = client.recent_stories.map(function(story) {
+          return $('<li class="client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
+        })
+        if (list_items.length != 0) {
+          list_items.push($('<li role="separator" class="divider client-' + client.id + '"></li>'));
+        }
+        return list_items;
+      })
+      console.log("recent_stories before appending is ", recent_stories);
+      $('.story-list').html(_.flatten(recent_stories));
       var r = data.clients.map(function(client) {
         return client.stories.map(function(story) {
           return $('<li class="client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
         })
       })
-      $('.story-list').html(_.flatten(r));
+      $('.story-list').append(_.flatten(r));
       set_story_list_handler();
       chrome.storage.local.get({sm_selected_client_id: ''}, function(localdata) {
         if (localdata.sm_selected_client_id=='') {
