@@ -85,6 +85,11 @@ section { padding: 5px;}
 
 span.stories {
   padding-top: 4px !important;
+  max-height: 49px !important;
+  overflow-y: scroll;
+  min-height: 28px !important;
+  height: auto !important;
+  padding-bottom: 0px !important;
 }
 
 .stories .label {

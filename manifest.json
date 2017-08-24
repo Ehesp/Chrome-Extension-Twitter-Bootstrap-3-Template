@@ -2,12 +2,15 @@
 	"manifest_version": 2,
 	"name": "ShareableMetrics",
 	"description": "Integrate with ShareableMetrics.",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"permissions": [
 		"storage",
 		"activeTab",
+		"http://localhost:3000/",
 		"http://app.shareablemetrics.com/",
-		"https://app.shareablemetrics.com/"
+		"https://app.shareablemetrics.com/",
+    "http://plumeapp-staging.herokuapp.com/",
+    "https://plumeapp-staging.herokuapp.com/"
 	],
 	"icons": {
 		"16": "img/icon16.png",
@@ -29,6 +32,9 @@
 	"content_scripts": [
     {
       "matches": [
+        "http://plumeapp-staging.herokuapp.com/*",
+        "https://plumeapp-staging.herokuapp.com/*",
+    		"http://localhost/*",
 				"http://*.shareablemetrics.com/*",
     		"https://*.shareablemetrics.com/*"
 	    	],

@@ -139,7 +139,6 @@ var launch_extension = function() {
     selected_stories = []
     // update_add_to_story_button()
     $('.story-badge').remove()
-    check_overflow();
     $('#stories-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/stories');
     $('#articles-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/articles');
     load_url_and_metadata();
@@ -238,31 +237,20 @@ var set_story_list_handler = function() {
     elt.find('.story-remove').on('click', function() {
       remove_story(elt)
     })
-    selected_stories.push($t.data('id'))
-    // update_add_to_story_button()
-    $t.addClass('hidden')
-    check_overflow();
-  });
-}
 
-var check_overflow = function() {
-  var has_overflow = _.some($('.story-badge'), function(s) {
-    return $(s).position().top >= $('.stories').height();
+    // New:
+    // if (selected_stories.length==0) {
+    //   $('.story-list').prepend($('<li role="separator" class="divider"></li>'))
+    // }
+    // $('.story-list').prepend($('<li><a href="#" class="story-list-item story-list-item-' +
+    //   $t.data('id') + '" data-id="' + $t.data('id') + '"><i class="fa fa-check"></i>' + $t.text() + '</a></li>'))
+
+    selected_stories.push($t.data('id'))
+
+    // update_add_to_story_button()
+    var menu_items = $('.story-list').find("[data-id='" + $t.data('id') + "']");
+    menu_items.addClass('hidden')
   });
-  if (has_overflow) {
-    $('.ellipsis').remove()
-    var story_names = _.map($('.story-badge-text'), function(s) {
-      console.log(s);
-      return $(s).text()
-    });
-    console.log(story_names);
-    $('.stories-input-group').append(
-      $('<span class="input-group-addon ellipsis" data-toggle="tooltip" data-placement="bottom" data-html="true" title="' +
-        story_names.join("<br>") + '">&hellip;</span>'));
-    $('.ellipsis').tooltip();
-  } else {
-    $('.ellipsis').remove()
-  }
 }
 
 var populate_dropdowns = function() {
@@ -459,7 +447,6 @@ var remove_story = function(elt) {
   })
   // update_add_to_story_button()
   $('.story-list-item-'+ story_id).removeClass('hidden')
-  check_overflow();
 }
 
 var reset_fields = function() {
