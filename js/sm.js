@@ -37,14 +37,11 @@ $( document ).ready(function() {
 });
 
 var launch_extension = function() {
-  console.log("Starting launch_extension");
   $('#status').append($('<div>Checking access...</div>'));
 
   chrome.storage.local.get({sm_info: {}}, function(data) {
-    console.log("inside the fn for the get, ", data);
 
     if (_.isEmpty(data.sm_info) || versionChanged(data.sm_info)) {
-      console.log("sm_info is empty or version is different");
       chrome.tabs.query({'url': [
         'http://*.shareablemetrics.com/*',
         'https://*.shareablemetrics.com/*',
@@ -52,7 +49,6 @@ var launch_extension = function() {
         'https://plumeapp-staging.herokuapp.com/*',
         'http://localhost/*',
         ]}, function (tabs) {
-          console.log("in the tabs query, tabs is", tabs);
         var tabs_count = tabs.length;
         if (tabs_count==0) {
           show_info_window();
@@ -72,27 +68,22 @@ var launch_extension = function() {
               var sm_info = {sm_api_token: token, sm_api_host: api_host, sm_app_host: app_host, sm_host_only: host_only,
                 fullname: fullname, initials: initials, email: email, extension_version: current_extension_version};
               chrome.storage.local.set({sm_info: sm_info}, function() {
-                console.log("Have set sm_info", sm_info);
                 show_main();
               });
               return;
             }
             tabs_count = tabs_count - 1;
-            console.log("tabs_count", tabs_count);
             if (tabs_count == 0) {
-              console.log("it's 0");
               if (!logged_in) {
-                console.log("logged_in=false");
                 $('#status').append($('<div>No access token found, please log in to ShareableMetrics to use this tool.</div>'));
               } else {
-                console.log("logged_in=true");
+                // console.log("logged_in=true");
               }
             }
           });
         });
       });
     } else {
-      console.log("sm_info is not empty:", data.sm_info);
       // Already have a token
       set_api_token(data.sm_info.sm_api_token)
       api_host = data.sm_info.sm_api_host;
@@ -106,18 +97,18 @@ var launch_extension = function() {
     }
   });
 
-  // Just for debugging
-  chrome.storage.onChanged.addListener(function(changes, namespace) {
-        for (key in changes) {
-          var storageChange = changes[key];
-          console.log('Storage key "%s" in namespace "%s" changed. ' +
-                      'Old value was "%s", new value is "%s".',
-                      key,
-                      namespace,
-                      storageChange.oldValue,
-                      storageChange.newValue);
-        }
-      });
+  // // Just for debugging
+  // chrome.storage.onChanged.addListener(function(changes, namespace) {
+  //       for (key in changes) {
+  //         var storageChange = changes[key];
+  //         console.log('Storage key "%s" in namespace "%s" changed. ' +
+  //                     'Old value was "%s", new value is "%s".',
+  //                     key,
+  //                     namespace,
+  //                     storageChange.oldValue,
+  //                     storageChange.newValue);
+  //       }
+  //     });
 
   $('#logout').on('click', function() {
     chrome.storage.local.remove(["sm_info"], function() {
@@ -134,7 +125,7 @@ var launch_extension = function() {
     chrome.storage.local.set({sm_selected_client_id: sm_selected_client_id}, function() {
     });
     $('.client-dropdown .name').text($t.text())
-    $('.story-list li').addClass('hidden');
+    $('.story-list li.story-item').addClass('hidden');
     $('.story-list li.client-' + sm_selected_client_id).removeClass('hidden');
     selected_stories = []
     // update_add_to_story_button()
@@ -198,6 +189,11 @@ var launch_extension = function() {
       m.find('tbody').html($(_.map(stories, function(s) { return '<tr><td>' + s.name + '</td></tr>'}).join('')))
     }
   });
+
+  $('#story-list-search').on('keyup', function(e) {
+    var search = $(e.target).val();
+    story_list_search(search);
+  });
 }
 
 var show_main = function() {
@@ -205,8 +201,6 @@ var show_main = function() {
   $('.check-access').removeClass('show').addClass('hidden');
   $('.main-content').removeClass('hidden').addClass('show');
   $('#status').empty();
-  // TODO This doesn't seem to remove focus from that first button
-  // console.log($('button.client-dropdown'));
   populate_dropdowns();
   $('button.client-dropdown').blur();
   if (!user_menu_set) {
@@ -236,7 +230,8 @@ var set_story_list_handler = function() {
     $('.stories').append(elt)
     elt.find('.story-remove').on('click', function() {
       remove_story(elt)
-    })
+    });
+    story_list_search('');
 
     // New:
     // if (selected_stories.length==0) {
@@ -256,12 +251,10 @@ var set_story_list_handler = function() {
 var populate_dropdowns = function() {
   $.get(api_host + "clients_and_stories")
     .done(function(data) {
-      console.log("clients_and_stories returned", data);
       sm_clients = data.clients;
       var recent_clients = data.recent_clients.map(function(client) {
         return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
       })
-      console.log("recent_clients is", recent_clients);
       if (recent_clients.length != 0) {
         $('.client-list').html(recent_clients);
         $('.client-list').append($('<li role="separator" class="divider"></li>'));
@@ -269,23 +262,20 @@ var populate_dropdowns = function() {
       var r = data.clients.map(function(client) {
         return $('<li><a href="#" class="client-list-item client-' + client.id + '" data-id="' + client.id + '">' + client.name + '</a></li>')
       })
-      console.log("r is", r);
       $('.client-list').append(r);
       var recent_stories = data.clients.map(function(client) {
-        console.log("client is ", client);
         var list_items = client.recent_stories.map(function(story) {
-          return $('<li class="client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
+          return $('<li class="story-item client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
         })
         if (list_items.length != 0) {
           list_items.push($('<li role="separator" class="divider client-' + client.id + '"></li>'));
         }
         return list_items;
       })
-      console.log("recent_stories before appending is ", recent_stories);
-      $('.story-list').html(_.flatten(recent_stories));
+      $('.story-list').append(_.flatten(recent_stories));
       var r = data.clients.map(function(client) {
         return client.stories.map(function(story) {
-          return $('<li class="client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
+          return $('<li class="story-item client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
         })
       })
       $('.story-list').append(_.flatten(r));
@@ -471,6 +461,17 @@ var reset_fields = function() {
   $('.stats .linkedin').text('')
   $('.stats .pinterest').text('')
   $('.stats .total').text('')
+}
+
+var story_list_search = function(search) {
+  var regexp = new RegExp(search, 'i');
+  var $data_rows = $('.story-list .story-item');
+  var matched = $.grep($data_rows, function(li) {
+    $li = $(li)
+    return $li.text().match(regexp) && $li.hasClass('client-' + sm_selected_client_id)
+  });
+  $data_rows.addClass('hidden');
+  $(matched).removeClass('hidden');
 }
 
 // var update_add_to_story_button = function() {

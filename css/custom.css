@@ -83,6 +83,17 @@ section { padding: 5px;}
   margin-bottom: 0;
 }
 
+.story-list {
+  height: auto;
+  max-height: 400px;
+  overflow-x: hidden;
+}
+
+#story-list-search {
+  margin-left: 10px;
+  width: 140px;
+}
+
 span.stories {
   padding-top: 4px !important;
   max-height: 49px !important;
