@@ -126,6 +126,7 @@ var launch_extension = function() {
     });
     $('.client-dropdown .name').text($t.text())
     $('.story-list li.story-item').addClass('hidden');
+    $('.story-list li.recent-story-divider').addClass('hidden');
     $('.story-list li.client-' + sm_selected_client_id).removeClass('hidden');
     selected_stories = []
     // update_add_to_story_button()
@@ -268,7 +269,7 @@ var populate_dropdowns = function() {
           return $('<li class="story-item client-' + client.id + '"><a href="#" class="story-list-item story-list-item-'+story.id+'" data-id="' + story.id + '">' + story.name + '</a></li>')
         })
         if (list_items.length != 0) {
-          list_items.push($('<li role="separator" class="divider client-' + client.id + '"></li>'));
+          list_items.push($('<li role="separator" class="divider recent-story-divider client-' + client.id + '" data-id="' + client.id + '"></li>'));
         }
         return list_items;
       })
