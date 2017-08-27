@@ -8,12 +8,13 @@ var host_only = '';
 var sm_selected_client_id = '';
 var sm_clients = {};
 var current_url = '';
-var selected_story_ids = [];
+var selected_stories = [];
 var metadata_result = {};
 var source_result = {};
 var stats_result = {};
 var user_menu_set = false;
 var current_extension_version = chrome.runtime.getManifest().version;
+var add_action = 'add';
 
 var versionChanged = function(sm_info) {
   if (sm_info.extension_version != current_extension_version) {
@@ -165,6 +166,7 @@ var launch_extension = function() {
         author: author,
         focus: focus,
         article_type: article_type,
+        add_action: add_action
       })
       .done(function(data) {
         $('.add-to-story').removeClass('loading')
@@ -225,6 +227,10 @@ var set_api_token = function(token) {
 var set_story_list_handler = function() {
   $('.story-list a').on('click', function(e) {
     $t = $(e.target)
+    var story_id = $t.data('id');
+    if (_.includes(selected_stories, story_id)) {
+      return;
+    }
     var elt = $('<span class="label label-default story-badge story-badge-' + $t.data('id') +
       '"><span class="story-badge-text">' + $t.text() + '</span><span class="story-remove" aria-hidden="true">&times;</span></span>')
     elt.data('story-id', $t.data('id'))
@@ -315,6 +321,8 @@ var load_url_and_metadata = function() {
           $('.metadata-editable #title').val(data.result.title)
           setup_editable_published_at(data);
         } else {
+          $('.metadata').removeClass('hidden')
+          $('.metadata-editable').addClass('hidden')
           if (data.result.in_client) {
             $('.metadata .url-icon').removeClass('hidden');
           }
@@ -338,6 +346,20 @@ var load_url_and_metadata = function() {
         $('.metadata .loading, .metadata-editable .loading').removeClass('loading')
         $('.metadata .url, .metadata-editable .url').text(data.result.canonical_url)
         current_url = data.result.canonical_url
+        if (data.result.in_client==true) {
+          $('.add-to-story').text('Update');
+          add_action = 'update';
+        } else {
+          $('.add-to-story').text('Add');
+          add_action = 'add';
+        }
+        $('.stories').html('');
+        selected_stories = [];
+        if (data.result.story_ids.length > 0) {
+          data.result.story_ids.map(function(story_id) {
+            $('.story-list-item-' + story_id).click();
+          });
+        }
         load_source(data.result.canonical_url);
         request_uuid = generateUUID();
         load_stats();
