@@ -130,7 +130,6 @@ var launch_extension = function() {
     $('.story-list li.recent-story-divider').addClass('hidden');
     $('.story-list li.client-' + sm_selected_client_id).removeClass('hidden');
     selected_stories = []
-    // update_add_to_story_button()
     $('.story-badge').remove()
     $('#stories-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/stories');
     $('#articles-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/articles');
@@ -240,16 +239,8 @@ var set_story_list_handler = function() {
     });
     story_list_search('');
 
-    // New:
-    // if (selected_stories.length==0) {
-    //   $('.story-list').prepend($('<li role="separator" class="divider"></li>'))
-    // }
-    // $('.story-list').prepend($('<li><a href="#" class="story-list-item story-list-item-' +
-    //   $t.data('id') + '" data-id="' + $t.data('id') + '"><i class="fa fa-check"></i>' + $t.text() + '</a></li>'))
-
     selected_stories.push($t.data('id'))
 
-    // update_add_to_story_button()
     var menu_items = $('.story-list').find("[data-id='" + $t.data('id') + "']");
     menu_items.addClass('hidden')
   });
@@ -458,7 +449,6 @@ var remove_story = function(elt) {
   selected_stories = selected_stories.filter(function(array_id) {
     return array_id != story_id;
   })
-  // update_add_to_story_button()
   $('.story-list-item-'+ story_id).removeClass('hidden')
 }
 
@@ -496,19 +486,6 @@ var story_list_search = function(search) {
   $data_rows.addClass('hidden');
   $(matched).removeClass('hidden');
 }
-
-// var update_add_to_story_button = function() {
-//   if (selected_stories.length==0) {
-//     $('.add-to-story').text("Add to stories")
-//     $('.add-to-story').addClass("hidden")
-//   } else if (selected_stories.length==1) {
-//     $('.add-to-story').text("Add to story")
-//     $('.add-to-story').removeClass("hidden")
-//   } else {
-//     $('.add-to-story').text("Add to stories")
-//     $('.add-to-story').removeClass("hidden")
-//   }
-// }
 
 var generateUUID = function() {
   var d, uuid;
