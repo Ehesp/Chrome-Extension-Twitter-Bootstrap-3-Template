@@ -38,8 +38,6 @@ $( document ).ready(function() {
 });
 
 var launch_extension = function() {
-  $('#status').append($('<div>Checking access...</div>'));
-
   chrome.storage.local.get({sm_info: {}}, function(data) {
 
     if (_.isEmpty(data.sm_info) || versionChanged(data.sm_info)) {
@@ -52,7 +50,7 @@ var launch_extension = function() {
         ]}, function (tabs) {
         var tabs_count = tabs.length;
         if (tabs_count==0) {
-          show_info_window();
+          show_info_window('<span>No ShareableMetrics tabs open.</span>');
           return;
         }
         tabs.map(function(t) {
@@ -76,7 +74,7 @@ var launch_extension = function() {
             tabs_count = tabs_count - 1;
             if (tabs_count == 0) {
               if (!logged_in) {
-                $('#status').append($('<div>No access token found, please log in to ShareableMetrics to use this tool.</div>'));
+                show_info_window('<span>No access token found in open SM tabs, please log in to ShareableMetrics to use this tool.</span>');
               } else {
                 // console.log("logged_in=true");
               }
@@ -288,7 +286,6 @@ var populate_dropdowns = function() {
           sm_selected_client_id = data.default_client_id;
         }
         $('.client-list a.client-' + sm_selected_client_id).click();
-        load_url_and_metadata();
       });
     })
     .fail(function(jqHxr, textStatus) {
@@ -499,8 +496,9 @@ var generateUUID = function() {
   return uuid;
 };
 
-var show_info_window = function() {
+var show_info_window = function(msg) {
   $('.info-window').removeClass('hidden');
+  $('#status').append($(msg));
   $('.check-access').addClass('hidden');
 }
 
