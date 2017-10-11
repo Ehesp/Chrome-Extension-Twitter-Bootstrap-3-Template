@@ -171,6 +171,7 @@ var launch_extension = function() {
         setTimeout(function() {
           $('.add-to-story').text('Add');
         }, 3000);
+        clear_saved_editable_fields();
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
@@ -212,6 +213,41 @@ var show_main = function() {
       $('.settings-menu').append($('<li><div>' + host_only + '</div></li>'))
     }
   }
+  setup_editable_field_listeners();
+}
+
+var setup_editable_field_listeners = function() {
+  $('.persistent').on('change', function(e) {
+    var $target = $(e.target);
+    var id = $target.attr('id');
+    var val = $target.val();
+    chrome.storage.local.get({sm_editable_fields: {fields: {}}}, function(data) {
+      data.sm_editable_fields.fields[id] = val;
+      chrome.storage.local.set(data, function() {
+      });
+    })
+  });
+}
+
+var load_saved_editable_fields = function() {
+  chrome.storage.local.get({sm_editable_fields: {fields: {}}}, function(data) {
+    _.keys(data.sm_editable_fields.fields).map(function(id, i) {
+      $("#" + id).val(data.sm_editable_fields.fields[id]);
+    });
+  });
+}
+
+var check_saved_editable_fields = function(url) {
+  chrome.storage.local.get({sm_editable_fields: {url: '', fields: {}}}, function(data) {
+    if (data.sm_editable_fields.url != url) {
+      data.sm_editable_fields.url = url;
+      data.sm_editable_fields.fields = {};
+      chrome.storage.local.set(data, function() {
+      });
+    } else {
+      // console.log("urls match, not clearing");
+    }
+  });
 }
 
 var set_api_token = function(token) {
@@ -297,6 +333,7 @@ var load_url_and_metadata = function() {
   reset_fields();
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
     var url = tabs[0].url;
+    check_saved_editable_fields(url);
     $.post(api_host + "get_article_metadata",
         {url: url,
           client_id: sm_selected_client_id})
@@ -348,6 +385,7 @@ var load_url_and_metadata = function() {
             $('.story-list-item-' + story_id).click();
           });
         }
+        load_saved_editable_fields();
         load_source(data.result.canonical_url);
         request_uuid = generateUUID();
         load_stats();
@@ -505,7 +543,7 @@ var show_info_window = function(msg) {
 var parseApiHost = function(url) {
   var parser = document.createElement('a');
   parser.href = url;
-  return parser.protocol + '//' + parser.host + '/api/v1/';
+  return parser.protocol + '//' + parser.host + '/api/v2/extension/';
 }
 
 var parseAppHost = function(url) {
