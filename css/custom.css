@@ -5,7 +5,7 @@
  */
 
 body, section {			/* Change width and height to own preferences */
-	width: 500px;
+	width: 700px;
 	overflow-x: hidden;
   padding: 3px;
 }
@@ -15,7 +15,7 @@ body.short {
 }
 
 body.tall {
-  height: 530px;
+  height: 600px;
 }
 
 /* Basic style tweaks */

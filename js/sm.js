@@ -127,6 +127,10 @@ var launch_extension = function() {
     $('.story-list li.story-item').addClass('hidden');
     $('.story-list li.recent-story-divider').addClass('hidden');
     $('.story-list li.client-' + sm_selected_client_id).removeClass('hidden');
+    $('#tone option.client').addClass('hidden');
+    $('#tone option.client-' + sm_selected_client_id).removeClass('hidden');
+    $('#article_type option.client').addClass('hidden');
+    $('#article_type option.client-' + sm_selected_client_id).removeClass('hidden');
     selected_stories = []
     $('.story-badge').remove()
     $('#stories-link').attr('href', app_host + 'clients/' + sm_selected_client_id + '/stories');
@@ -149,6 +153,7 @@ var launch_extension = function() {
       var author = $('#author').val();
       var focus = $('#focus').val();
       var article_type = $('#article_type').val();
+      var initiative = $('#initiative').val();
     }
     $.post(api_host + "add_article",
       {
@@ -163,6 +168,7 @@ var launch_extension = function() {
         author: author,
         focus: focus,
         article_type: article_type,
+        initiative: initiative,
         add_action: add_action
       })
       .done(function(data) {
@@ -312,6 +318,23 @@ var populate_dropdowns = function() {
       })
       $('.story-list').append(_.flatten(r));
       set_story_list_handler();
+
+      var r = data.clients.map(function(client) {
+        return client.article_tone_values.map(function(article_tone_value) {
+          return $('<option class="client client-' + client.id + '">' + article_tone_value[0] + '</option>')
+        })
+      })
+      $('#tone').append($('<option>Select...</option>'));
+      $('#tone').append(_.flatten(r));
+
+      var r = data.clients.map(function(client) {
+        return client.article_type_values.map(function(article_type_value) {
+          return $('<option class="client client-' + client.id + '">' + article_type_value[0] + '</option>')
+        })
+      })
+      $('#article_type').append($('<option>Select...</option>'));
+      $('#article_type').append(_.flatten(r));
+
       chrome.storage.local.get({sm_selected_client_id: ''}, function(localdata) {
         if (localdata.sm_selected_client_id=='') {
           sm_selected_client_id = data.default_client_id;
@@ -367,6 +390,7 @@ var load_url_and_metadata = function() {
           $('.user .author').text(data.result.author_name)
           $('.user .article_type').text(data.result.article_type)
           $('.user .focus').text(data.result.focus)
+          $('.user .initiative').text(data.result.initiative)
         }
         $('.metadata .loading, .metadata-editable .loading').removeClass('loading')
         $('.metadata .url, .metadata-editable .url').text(data.result.canonical_url)
@@ -503,6 +527,7 @@ var reset_fields = function() {
   $('.user .author').text('')
   $('.user .article_type').text('')
   $('.user .focus').text('')
+  $('.user .initiative').text('')
   $('.stats .facebook').text('')
   $('.stats .twitter').text('')
   $('.stats .google').text('')

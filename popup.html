@@ -116,23 +116,20 @@
 
         <div class="metadata">
           <div class="row">
-            <div class="col-xs-2"><strong>Source</strong></div>
-            <div class="col-xs-10 source loading"></div>
+            <div class="col-xs-1"><strong>Source</strong></div>
+            <div class="col-xs-5 source loading"></div>
+            <div class="col-xs-1"><strong>Published</strong></div>
+            <div class="col-xs-5 pubdate loading"></div>
           </div>
 
           <div class="row">
-            <div class="col-xs-2"><strong>Published</strong></div>
-            <div class="col-xs-10 pubdate loading"></div>
+            <div class="col-xs-1"><strong>Title</strong></div>
+            <div class="col-xs-11 title text-field loading"></div>
           </div>
 
           <div class="row">
-            <div class="col-xs-2"><strong>Title</strong></div>
-            <div class="col-xs-10 title text-field loading"></div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-2"><strong>URL</strong></div>
-            <div class="col-xs-10">
+            <div class="col-xs-1"><strong>URL</strong></div>
+            <div class="col-xs-11">
               <span class="url-icon hidden">
                 <i class="fa fa-building"></i>
               </span>
@@ -145,29 +142,24 @@
         <div class="metadata-editable hidden form-inline">
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>Source</label></div>
-              <div class="col-xs-10 source loading"></div>
+              <div class="col-xs-1"><label>Source</label></div>
+              <div class="col-xs-5 source loading"></div>
+              <div class="col-xs-1"><label>Published</label></div>
+              <div class="col-xs-5 pubdate loading"><input class="form-control persistent" id="pubdate"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>Published</label></div>
-              <div class="col-xs-10 pubdate loading"><input class="form-control persistent" id="pubdate"></div>
+              <div class="col-xs-1"><label>Title</label></div>
+              <div class="col-xs-11 text-field loading"><textarea class="form-control persistent" rows="2" id="title"></textarea></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>Title</label></div>
-              <div class="col-xs-10 text-field loading"><textarea class="form-control persistent" rows="2" id="title"></textarea></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group">
-              <div class="col-xs-2"><label>URL</label></div>
-              <div class="col-xs-10 text-field url loading"></div>
+              <div class="col-xs-1"><label>URL</label></div>
+              <div class="col-xs-11 text-field url loading"></div>
             </div>
           </div>
 
@@ -205,33 +197,35 @@
         <div class="user hidden form-inline">
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><strong>Summary</strong></div>
-              <div class="col-xs-10 summary"></div>
+              <div class="col-xs-1"><strong>Summary</strong></div>
+              <div class="col-xs-11 summary"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><strong>Notes</strong></div>
-              <div class="col-xs-10 notes"></div>
+              <div class="col-xs-1"><strong>Notes</strong></div>
+              <div class="col-xs-11 notes"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>Tone</label></div>
-              <div class="col-xs-4 tone"></div>
-              <div class="col-xs-2"><label>Author</label></div>
-              <div class="col-xs-4 author"></div>
+              <div class="col-xs-1"><label>Tone</label></div>
+              <div class="col-xs-3 tone"></div>
+              <div class="col-xs-1"><label>Author</label></div>
+              <div class="col-xs-3 author"></div>
+              <div class="col-xs-1"><label>Initiative</label></div>
+              <div class="col-xs-3 initiative"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2" style="padding-right: 0;"><label>Article Type</label></div>
-              <div class="col-xs-4 article_type"></div>
-              <div class="col-xs-2"><label>Focus</label></div>
-              <div class="col-xs-4 focus"></div>
+              <div class="col-xs-1" style="padding-right: 0;"><label>Type</label></div>
+              <div class="col-xs-3 article_type"></div>
+              <div class="col-xs-1"><label>Focus</label></div>
+              <div class="col-xs-3 focus"></div>
             </div>
           </div>
 
@@ -240,46 +234,41 @@
         <div class="user-editable hidden form-inline">
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><strong>Summary</strong></div>
-              <div class="col-xs-10"><textarea class="form-control persistent" rows="2" id="summary"></textarea></div>
+              <div class="col-xs-1"><strong>Summary</strong></div>
+              <div class="col-xs-11"><textarea class="form-control persistent" rows="3" id="summary"></textarea></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><strong>Notes</strong></div>
-              <div class="col-xs-10"><textarea class="form-control persistent" rows="2" id="notes"></textarea></div>
+              <div class="col-xs-1"><strong>Notes</strong></div>
+              <div class="col-xs-11"><textarea class="form-control persistent" rows="3" id="notes"></textarea></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2"><label>Tone</label></div>
-              <div class="col-xs-4">
+              <div class="col-xs-1"><label>Tone</label></div>
+              <div class="col-xs-3">
                 <select class="form-control persistent" id="tone">
-                  <option>Select...</option>
-                  <option>Positive</option>
-                  <option>Neutral</option>
-                  <option>Negative</option>
                 </select>
               </div>
-              <div class="col-xs-2"><label>Author</label></div>
-              <div class="col-xs-4"><input class="form-control persistent" type="string" id="author"></div>
+              <div class="col-xs-1"><label>Author</label></div>
+              <div class="col-xs-3"><input class="form-control persistent" type="string" id="author"></div>
+              <div class="col-xs-1"><label>Initiative</label></div>
+              <div class="col-xs-3"><input class="form-control persistent" type="string" id="initiative"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group">
-              <div class="col-xs-2" style="padding-right: 0;"><label>Article Type</label></div>
-              <div class="col-xs-4">
+              <div class="col-xs-1" style="padding-right: 0;"><label>Type</label></div>
+              <div class="col-xs-3">
                 <select class="form-control persistent" id="article_type">
-                  <option>Select...</option>
-                  <option>Feature</option>
-                  <option>Mention</option>
                 </select>
               </div>
-              <div class="col-xs-2"><label>Focus</label></div>
-              <div class="col-xs-4"><input class="form-control persistent" type="string" id="focus"></div>
+              <div class="col-xs-1"><label>Focus</label></div>
+              <div class="col-xs-3"><input class="form-control persistent" type="string" id="focus"></div>
             </div>
           </div>
 
