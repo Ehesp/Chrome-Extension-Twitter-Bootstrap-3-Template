@@ -75,8 +75,12 @@ section { padding: 5px;}
   white-space: nowrap;
 }
 
-.stats th {
-  width: 20%;
+.stats-value-column {
+  width: 15%;
+}
+
+.stats-total-column {
+  width: 25%;
 }
 
 .stats .table {
