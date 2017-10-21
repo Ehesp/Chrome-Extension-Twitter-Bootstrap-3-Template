@@ -154,6 +154,7 @@ var launch_extension = function() {
       var focus = $('#focus').val();
       var article_type = $('#article_type').val();
       var initiative = $('#initiative').val();
+      var report_on_date = moment($('#report_on_date').val()).format('YYYY-MM-DD');
     }
     $.post(api_host + "add_article",
       {
@@ -169,6 +170,7 @@ var launch_extension = function() {
         focus: focus,
         article_type: article_type,
         initiative: initiative,
+        report_on_date: report_on_date,
         add_action: add_action
       })
       .done(function(data) {
@@ -177,7 +179,6 @@ var launch_extension = function() {
         setTimeout(function() {
           $('.add-to-story').text('Add');
         }, 3000);
-        clear_saved_editable_fields();
       })
     .fail(function(jqHxr, textStatus) {
       $('.main-content .status').append($('<div>Add failed: ' + textStatus + '</div>'));
@@ -381,6 +382,7 @@ var load_url_and_metadata = function() {
         if (data.result.extended_fields_editable==true) {
           $('.user').addClass('hidden')
           $('.user-editable').removeClass('hidden')
+          setup_editable_report_on_date(data);
         } else {
           $('.user').removeClass('hidden')
           $('.user-editable').addClass('hidden')
@@ -391,6 +393,7 @@ var load_url_and_metadata = function() {
           $('.user .article_type').text(data.result.article_type)
           $('.user .focus').text(data.result.focus)
           $('.user .initiative').text(data.result.initiative)
+          $('.user .report_on_date').text(data.result.report_on_date_formatted)
         }
         $('.metadata .loading, .metadata-editable .loading').removeClass('loading')
         $('.metadata .url, .metadata-editable .url').text(data.result.canonical_url)
@@ -454,6 +457,35 @@ var setup_editable_published_at = function(data) {
     });
 
     $('.metadata-editable #pubdate').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+  }
+}
+
+var setup_editable_report_on_date = function(data) {
+  if (data.result.report_on_date) {
+    $('#report_on_date').daterangepicker(
+      { "singleDatePicker": true,
+        "showDropdowns": true,
+        "alwaysShowCalendars": true,
+        "drops": "up",
+        "startDate": moment(data.result.report_on_date)
+      }
+    )
+  } else {
+    $('#report_on_date').daterangepicker(
+      { "singleDatePicker": true,
+        "showDropdowns": true,
+        "alwaysShowCalendars": true,
+        "drops": "up",
+        "autoUpdateInput": false
+      }
+    )
+    $('#report_on_date').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('MM/DD/YYYY'));
+    });
+
+    $('#report_on_date').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
   }
