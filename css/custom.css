@@ -162,6 +162,11 @@ span.stories {
   background-color: #fba8a8;
 }
 
+.compact-alert {
+  margin-bottom: 0;
+  padding: 6px 5px 5px 7px;
+}
+
 /* For animated ellipsis */
 .loading:after {
   overflow: hidden;

@@ -192,8 +192,10 @@ var launch_extension = function() {
     var stories = _.filter(client.stories, function(s) {return _.includes(selected_stories, s.id)});
     if (stories.length==0){
       m.find('.story-table').addClass('hidden')
+      m.find('.no-stories-note').removeClass('hidden')
     } else {
       m.find('.story-table').removeClass('hidden')
+      m.find('.no-stories-note').addClass('hidden')
       m.find('tbody').html($(_.map(stories, function(s) { return '<tr><td>' + s.name + '</td></tr>'}).join('')))
     }
   });
@@ -349,7 +351,7 @@ var populate_dropdowns = function() {
       });
     })
     .fail(function(jqHxr, textStatus) {
-      $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
+      $('.main-content .status').append($('<div>Load clients_and_stories failed: ' + textStatus + '</div>'));
       });
 }
 
@@ -418,14 +420,25 @@ var load_url_and_metadata = function() {
         load_stats();
       })
     .fail(function(jqHxr, textStatus) {
-      $('.main-content .status').append($('<div>Load failed: ' + textStatus + '</div>'));
+      var errorText;
+      if (jqHxr.responseJSON) {
+        errorText = jqHxr.responseJSON.result.error;
+      } else {
+        errorText = textStatus;
+      }
+      $('.main-content .status').append($('<div class="alert alert-danger compact-alert" role="alert">Error: ' + errorText + '</div>'));
+      $('.metadata .loading, .metadata-editable .loading, .stats-panel .loading').removeClass('loading');
+      $('.stats-panel td.stats-value-column').html('&nbsp;');
+      $('.add-to-story').addClass('disabled').prop('disabled', true);
       });
 
     chrome.tabs.executeScript(tabs[0].id, {'file': 'js/get-metadata.js'}, function(r) {
       var metadata = r[0];
       // This parses any HTML entities, etc.
-      var doc = new DOMParser().parseFromString(metadata.description[0][0], "text/html");
-      $('#summary').val(doc.documentElement.textContent)
+      if (metadata.description[0][0] != null) {
+        var doc = new DOMParser().parseFromString(metadata.description[0][0], "text/html");
+        $('#summary').val(doc.documentElement.textContent)
+      }
       var authors = metadata.author.map(function(m) {
         return m[0]
       })

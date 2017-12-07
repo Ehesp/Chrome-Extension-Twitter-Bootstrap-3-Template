@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "ShareableMetrics",
 	"description": "Integrate with ShareableMetrics.",
-	"version": "1.0.13.0",
+	"version": "1.0.13.1",
 	"permissions": [
 		"storage",
 		"activeTab",
