@@ -1,0 +1,22 @@
+{
+  "name": "sm-chrome-extension",
+  "homepage": "https://github.com/ShareableMetrics/sm-chrome-extension",
+  "authors": [
+    "Denis Haskin <denis@constantorbit.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "validate": "validate.js#^0.11.1"
+  }
+}

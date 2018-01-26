@@ -6,7 +6,6 @@
 	"permissions": [
 		"storage",
 		"activeTab",
-		"http://localhost:3000/",
 		"http://app.shareablemetrics.com/",
 		"https://app.shareablemetrics.com/"
 	],
