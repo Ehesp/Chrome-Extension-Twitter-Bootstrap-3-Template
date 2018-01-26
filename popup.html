@@ -118,8 +118,8 @@
           <div class="row">
             <div class="col-xs-1"><strong>Source</strong></div>
             <div class="col-xs-5 source loading"></div>
-            <div class="col-xs-1"><strong>Published</strong></div>
-            <div class="col-xs-5 pubdate loading"></div>
+            <div class="col-xs-2"><strong>Publish Date</strong></div>
+            <div class="col-xs-4 pubdate loading"></div>
           </div>
 
           <div class="row">
@@ -144,8 +144,8 @@
             <div class="form-group">
               <div class="col-xs-1"><label>Source</label></div>
               <div class="col-xs-5 source loading"></div>
-              <div class="col-xs-1"><label>Published</label></div>
-              <div class="col-xs-5 pubdate loading"><input class="form-control persistent" id="pubdate"></div>
+              <div class="col-xs-2"><label>Publish Date</label></div>
+              <div class="col-xs-4 pubdate loading"><input class="form-control persistent" id="pubdate"></div>
             </div>
           </div>
 
@@ -199,79 +199,79 @@
           </div>
         </div>
 
-        <div class="user hidden form-inline">
+        <div class="user form-inline">
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-1 custom-fields-label2"><strong>Author</strong></div>
+              <div class="col-xs-5"><input class="form-control persistent" type="string" id="author"></div>
+              <div class="col-xs-2 custom-fields-label2"><strong>Report Date</strong></div>
+              <div class="col-xs-4"><input class="form-control persistent" type="string" id="report_on_date"></div>
+            </div>
+          </div>
+
+        <div class="user form-inline">
           <div class="row">
             <div class="form-group">
               <div class="col-xs-1"><strong>Summary</strong></div>
-              <div class="col-xs-11 summary"></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group">
+              <div class="col-xs-5"><textarea class="form-control persistent" rows="4" id="summary"></textarea></div>
               <div class="col-xs-1"><strong>Notes</strong></div>
-              <div class="col-xs-11 notes"></div>
+              <div class="col-xs-5"><textarea class="form-control persistent" rows="4" id="notes"></textarea></div>
             </div>
           </div>
 
           <div class="row">
-            <div class="form-group">
-              <div class="col-xs-1"><label>Report on</label></div>
-              <div class="col-xs-3 report_on_date"></div>
-              <div class="col-xs-1"><label>Tone</label></div>
-              <div class="col-xs-3 tone"></div>
-              <div class="col-xs-1" style="padding-right: 0;"><label>Type</label></div>
-              <div class="col-xs-3 article_type"></div>
-            </div>
-          </div>
+            <div class="form-group custom-fields">
 
-          <div class="row">
-            <div class="form-group">
-              <div class="col-xs-1"><label>Author</label></div>
-              <div class="col-xs-3 author"></div>
-              <div class="col-xs-1"><label>Initiative</label></div>
-              <div class="col-xs-3 initiative"></div>
-              <div class="col-xs-1"><label>Focus</label></div>
-              <div class="col-xs-3 focus"></div>
-            </div>
-          </div>
+              <div class="custom-field cf_tone dropdown hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Tone</label></div>
+                <div class="col-xs-3 custom-fields"><select class="form-control persistent" id="tone_s"></select></div>
+              </div>
 
-        </div>
+              <div class="custom-field cf_tone fillin hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Tone</label></div>
+                <div class="col-xs-3 custom-fields"><input class="form-control persistent" type="string" id="tone_i"></div>
+              </div>
 
-        <div class="user-editable hidden form-inline">
-          <div class="row">
-            <div class="form-group">
-              <div class="col-xs-1"><strong>Summary</strong></div>
-              <div class="col-xs-11"><textarea class="form-control persistent" rows="3" id="summary"></textarea></div>
-            </div>
-          </div>
+              <div class="custom-field cf_article_type dropdown hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Type</label></div>
+                <div class="col-xs-3 custom-fields"><select class="form-control persistent article_type_s" id="article_type_s"></select></div>
+              </div>
 
-          <div class="row">
-            <div class="form-group">
-              <div class="col-xs-1"><strong>Notes</strong></div>
-              <div class="col-xs-11"><textarea class="form-control persistent" rows="3" id="notes"></textarea></div>
-            </div>
-          </div>
+              <div class="custom-field cf_article_type fillin hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Type</label></div>
+                <div class="col-xs-3 custom-fields"><input class="form-control persistent" type="string" id="article_type_i"></div>
+              </div>
 
-          <div class="row">
-            <div class="form-group">
-              <div class="col-xs-1"><label>Report on</label></div>
-              <div class="col-xs-3"><input class="form-control persistent" type="string" id="report_on_date"></div>
-              <div class="col-xs-1"><label>Tone</label></div>
-              <div class="col-xs-3"><select class="form-control persistent" id="tone"></select></div>
-              <div class="col-xs-1" style="padding-right: 0;"><label>Type</label></div>
-              <div class="col-xs-3"><select class="form-control persistent" id="article_type"></select></div>
-            </div>
-          </div>
+              <div class="custom-field cf_initiative dropdown hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Initiative</label></div>
+                <div class="col-xs-3 custom-fields"><select class="form-control persistent" id="initiative_s"></select></div>
+              </div>
 
-          <div class="row">
-            <div class="form-group">
-              <div class="col-xs-1"><label>Author</label></div>
-              <div class="col-xs-3"><input class="form-control persistent" type="string" id="author"></div>
-              <div class="col-xs-1"><label>Initiative</label></div>
-              <div class="col-xs-3"><input class="form-control persistent" type="string" id="initiative"></div>
-              <div class="col-xs-1"><label>Focus</label></div>
-              <div class="col-xs-3"><input class="form-control persistent" type="string" id="focus"></div>
+              <div class="custom-field cf_initiative fillin hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Initiative</label></div>
+                <div class="col-xs-3 custom-fields"><input class="form-control persistent" type="string" id="initiative_i"></div>
+              </div>
+
+              <div class="custom-field cf_focus dropdown hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Focus</label></div>
+                <div class="col-xs-3 custom-fields"><select class="form-control persistent" id="focus_s"></select></div>
+              </div>
+
+              <div class="custom-field cf_focus fillin hidden">
+                <div class="col-xs-1 custom-fields-label"><label>Focus</label></div>
+                <div class="col-xs-3 custom-fields"><input class="form-control persistent" type="string" id="focus_i"></div>
+              </div>
+
+              <div class="custom-field cf_custom_1 dropdown hidden">
+                <div class="col-xs-1 custom-fields-label"><label>custom_1</label></div>
+                <div class="col-xs-3 custom-fields"><select class="form-control persistent" id="custom_1_s"></select></div>
+              </div>
+
+              <div class="custom-field cf_custom_1 fillin hidden">
+                <div class="col-xs-1 custom-fields-label"><label>custom_1</label></div>
+                <div class="col-xs-3 custom-fields"><input class="form-control persistent" type="string" id="custom_1_i"></div>
+              </div>
+
             </div>
           </div>
 

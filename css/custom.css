@@ -144,6 +144,18 @@ span.stories {
   margin: auto 5px;
 }
 
+.custom-fields {
+  margin-top: 5px;
+}
+
+.custom-fields-label {
+  margin-top: 10px;
+}
+
+.custom-fields-label2 {
+  margin-top: 7px;
+}
+
 .info-window img {
   margin: auto;
   margin-top: 80px;
